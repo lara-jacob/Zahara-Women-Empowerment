@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zahara - Women Empowerment</title>
+    <link href="https://fonts.googleapis.com/css2?family=Babylonica&family=Ysabeau:wght@400&display=swap" rel="stylesheet">
+    <style>
+        /* General Styling */
+body {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+/* Background: home.html (Fixed Position) */
+.background-page {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    border: none;
+    z-index: -1; /* Keeps home.html always behind */
+}
+
+/* Foreground: index.html content */
+.slide-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background-color: black;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    transition: transform 1.5s ease-in-out;
+}
+
+/* Container for logo and text */
+.container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+/* Logo */
+.logo {
+    width: 878px;
+    height: 887px;
+    opacity: 0;
+    transform: scale(0.5);
+    transition: opacity 2s ease-in-out, transform 2s ease-in-out;
+}
+
+/* "ahara" text */
+.rest-text {
+    font-size: 139px;
+    font-family: 'Babylonica', cursive;
+    color: #c78b64;
+    opacity: 0;
+    position: absolute;
+    left: 45%;
+    top: 50%;
+    transform: translateY(-50%);
+    transition: opacity 1.5s ease-in-out, left 1.5s ease-out;
+}
+
+/* Tagline */
+.tagline {
+    font-size: 36px;
+    font-family: 'Ysabeau', sans-serif;
+    color: #c78b64;
+    opacity: 0;
+    position: absolute;
+    top: 68%;
+    left: 58%;
+    transform: translateX(-50%) translateY(20px);
+    transition: opacity 2s ease-in-out, transform 2s ease-out;
+}
+
+/* Animation Activation */
+.visible-logo {
+    opacity: 1;
+    transform: scale(1);
+}
+
+.visible-text {
+    opacity: 1;
+    left: 55%;
+}
+
+.visible-tagline {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+}
+
+/* PAGE SLIDE EFFECT */
+.slide-left {
+    transform: translateX(-100%);
+}
+
+    </style>
+</head>
+<body>
+
+    <!-- Background: home.html -->
+    <iframe src="{{ url_for('home') }}" class="background-page"></iframe>
+
+    <!-- Foreground (index.html content) -->
+    <div class="slide-container">
+        <div class="content">
+            <div class="container">
+                <img src="\static\assets\logo.png" alt="Zahara Logo" class="logo">
+                <span class="rest-text">ahara</span>
+            </div>
+            <div class="tagline">DISCOVER. INSPIRE. LEAD</div>
+        </div>
+    </div>
+
+    <script> document.addEventListener("DOMContentLoaded", function () { 
+        setTimeout(() => {
+            document.querySelector(".logo").classList.add("visible-logo");
+        }, 500);
+    
+        setTimeout(() => {
+            document.querySelector(".rest-text").classList.add("visible-text");
+        }, 1500);
+    
+        setTimeout(() => {
+            document.querySelector(".tagline").classList.add("visible-tagline");
+        }, 2500); // Now appears correctly
+    
+        // Slide index.html away and reveal home.html
+        setTimeout(() => {
+            document.querySelector(".slide-container").classList.add("slide-left");
+    
+            // Wait for transition before fully switching
+            setTimeout(() => {
+                window.location.href = "{{url_for('home') }}";
+            }, 1500);
+        }, 5000);
+    });
+    </script>
+
+</body>
+</html>

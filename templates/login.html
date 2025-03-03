@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zahara Login and Signup</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: #f7f7f7;
+            overflow: hidden;
+        }
+
+        .container {
+            position: relative;
+            width: 700px;
+            height: 500px;
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .form-container {
+            position: absolute;
+            top: 0;
+            width: 200%;
+            height: 100%;
+            display: flex;
+            transition: transform 0.6s ease-in-out;
+        }
+
+        .form-container.sign-up-mode {
+            transform: translateX(-50%);
+        }
+
+        .form {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 0 30px;
+            transition: all 0.5s ease;
+        }
+
+        .form.login {
+            align-items: flex-end;
+            background: #ffffff;
+            padding-right: 80px;
+            text-align: right;
+        }
+
+        .form.sign-up {
+            background: #ffffff;
+            padding-left: 100px;
+        }
+
+        h2 {
+            margin-bottom: 10px;
+            font-size: 20px;
+            color: #333;
+        }
+
+        .form-group {
+            width: 60%;
+            margin-bottom: 10px;
+        }
+
+        .form-group input {
+            width: 60%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 12px;
+        }
+
+        .form-group button {
+            width: 60%;
+            padding: 8px;
+            background: #C59172;
+            border: none;
+            border-radius: 5px;
+            color: #fff;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .form-group button:hover {
+            background: #C59172;
+        }
+
+        .overlay-container {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            width: 50%;
+            height: 100%;
+            background: #c59172;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: transform 0.6s ease-in-out;
+            z-index: 5;
+        }
+
+        .overlay-container.sign-up-mode {
+            transform: translateX(-100%);
+        }
+
+        .overlay {
+            text-align: center;
+            color: #fff;
+        }
+
+        .overlay button {
+            margin-top: 15px;
+            background: #fff;
+            color: #C59172;
+            border: none;
+            border-radius: 5px;
+            padding: 8px 15px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background 0.3s;
+        }
+
+        .overlay button:hover {
+            background: #C59172;
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="form-container" id="form-container">
+            <!-- Sign Up Section -->
+            <div class="form sign-up">
+                <h2>Create Account</h2>
+                <div class="form-group">
+                    <input type="text" placeholder="Name" required>
+                </div>
+                <div class="form-group">
+                    <input type="email" placeholder="Email" required>
+                </div>
+                <div class="form-group">
+                    <input type="password" placeholder="Password" required>
+                </div>
+                <div class="form-group">
+                    <button id="sign-up-btn">Submit</button>
+                </div>
+            </div>
+
+            <!-- Login Section -->
+            <div class="form login">
+                <h2>Login to Zahara   </h2>
+                <div class="form-group">
+                    <input type="email" placeholder="Email" required>
+                </div>
+                <div class="form-group">
+                    <input type="password" placeholder="Password" required>
+                </div>
+                <div class="form-group">
+                    <button id="login-btn">Submit</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="overlay-container" id="overlay-container">
+            <div class="overlay">
+                <h2 id="overlay-header">Hello, Friend!</h2>
+                <p id="overlay-text">Enter your details and start your journey with us.</p>
+                <button id="overlay-button">Login</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const formContainer = document.getElementById('form-container');
+        const overlayContainer = document.getElementById('overlay-container');
+        const overlayButton = document.getElementById('overlay-button');
+        const signUpButton = document.getElementById('sign-up-btn');
+        const overlayHeader = document.getElementById('overlay-header');
+        const overlayText = document.getElementById('overlay-text');
+
+        overlayButton.addEventListener('click', () => {
+            if (overlayButton.textContent === "Login") {
+                formContainer.classList.add('sign-up-mode');
+                overlayContainer.classList.add('sign-up-mode');
+                overlayHeader.textContent = "Welcome Back!";
+                overlayText.textContent = "To keep connected with us, please log in.";
+                overlayButton.textContent = "Sign Up";
+            } else {
+                formContainer.classList.remove('sign-up-mode');
+                overlayContainer.classList.remove('sign-up-mode');
+                overlayHeader.textContent = "Hello, Friend!";
+                overlayText.textContent = "Enter your details and start your journey with us.";
+                overlayButton.textContent = "Login";
+            }
+        });
+
+        signUpButton.addEventListener('click', () => {
+            formContainer.classList.remove('sign-up-mode');
+            overlayContainer.classList.remove('sign-up-mode');
+            overlayHeader.textContent = "Hello, Friend!";
+            overlayText.textContent = "Enter your details and start your journey with us.";
+            overlayButton.textContent = "Login";
+        });   
+
+        document.getElementById("sign-up-btn").addEventListener("click", async (e) => {
+    e.preventDefault();
+    const name = document.querySelector(".sign-up input[placeholder='Name']").value;
+    const email = document.querySelector(".sign-up input[placeholder='Email']").value;
+    const password = document.querySelector(".sign-up input[placeholder='Password']").value;
+
+    const response = await fetch("http://127.0.0.1:5000/signup", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, email, password })
+    });
+
+    const result = await response.json();
+    alert(result.message || result.error);
+
+    // ✅ Automatically switch to login section on success
+    if (response.status === 201) {
+        formContainer.classList.remove('sign-up-mode');
+        overlayContainer.classList.remove('sign-up-mode');
+        overlayHeader.textContent = "Hello, Friend!";
+        overlayText.textContent = "Enter your details and start your journey with us.";
+        overlayButton.textContent = "Login";
+    }
+});
+
+document.getElementById("login-btn").addEventListener("click", async (e) => {
+    e.preventDefault();
+    const email = document.querySelector(".login input[placeholder='Email']").value;
+    const password = document.querySelector(".login input[placeholder='Password']").value;
+
+    const response = await fetch("http://127.0.0.1:5000/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password })
+    });
+
+    const result = await response.json();
+    alert(result.message || result.error);
+    if (response.status === 200) {
+        window.location.href = "{{ url_for('profile') }}"; // Redirect to profile page
+    }
+});
+
+
+    </script>
+</body>
+</html>

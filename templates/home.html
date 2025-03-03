@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Zahara</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .fade {
+      transition: opacity 1s ease-in-out;
+    }
+    .move {
+      transition: left 1s ease-in-out;
+    }
+  </style>
+</head>
+<body class="bg-white text-black h-screen flex flex-col">
+  
+  <!-- Header -->
+  <header class="flex justify-between items-center p-6">
+    <img src="\static\assets\name.png" alt="Zahara Logo" class="h-12">
+  
+    <div class="w-full flex justify-center">
+      <nav class="space-x-8 text-lg flex">
+        <a href="#" class="hover:underline">HOME</a>
+        <a href="{{ url_for('login_page') }}">Login/Signup</a> <!-- Updated link -->
+        <a href="#" class="hover:underline">ABOUT US</a>
+      </nav>
+    </div>
+  
+    <button class="md:hidden text-2xl">&#9776;</button>
+  </header>
+  
+  
+  
+  
+  <!-- Hero Section -->
+  <main class="flex flex-col md:flex-row items-center justify-center flex-grow relative px-10">
+    <div id="circle" class="absolute w-80 h-80 bg-orange-500 rounded-full -z-10 move" style="left: 55%; top: 50%; transform: translate(-50%, -50%);"></div>
+    
+    <!-- Left Side - Static Quote -->
+    <div class="md:w-1/3 text-left">
+      <p class="text-gray-600 mb-4">"Empowering women with knowledge, opportunities, and a future of endless possibilities."</p>
+    </div>
+    
+    <!-- Changing Image -->
+    <div class="relative">
+      <img id="image" src="\static\assets\1.png" alt="Profile" class="w-80 object-cover relative z-10 rounded-lg grayscale fade" />
+    </div>
+    
+    <!-- Right Side - Changing Quote -->
+    <div class="ml-10 md:w-1/3">
+      <h2 id="quote" class="text-6xl font-bold text-black leading-tight fade">Believe you can and you're <br /> halfway there.</h2>
+    </div>
+  </main>
+
+  <!-- Schemes Section -->
+  <section class="py-12 px-6 bg-gray-50">
+    <div class="container mx-auto text-center">
+      <h2 class="text-3xl font-bold mb-6">Explore Government Schemes</h2>
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+        
+        <!-- Category Card -->
+        <div class="text-center">
+          <img src="\static\assets\agriculture.png" alt="Agriculture" class="mx-auto w-16 h-16">
+          <p class="text-green-700 font-semibold text-lg">417 Schemes</p>
+          <h3 class="text-xl font-bold">Agriculture, Rural & Environment</h3>
+        </div>
+
+        <div class="text-center">
+          <img src="\static\assets\bank.png" alt="Banking" class="mx-auto w-16 h-16">
+          <p class="text-green-700 font-semibold text-lg">214 Schemes</p>
+          <h3 class="text-xl font-bold">Banking, Financial Services & Insurance</h3>
+        </div>
+
+        <div class="text-center">
+          <img src="\static\assets\business.jpg" alt="Business" class="mx-auto w-16 h-16">
+          <p class="text-green-700 font-semibold text-lg">437 Schemes</p>
+          <h3 class="text-xl font-bold">Business & Entrepreneurship</h3>
+        </div>
+
+        <div class="text-center">
+          <img src="\static\assets\education.png" alt="Education" class="mx-auto w-16 h-16">
+          <p class="text-green-700 font-semibold text-lg">766 Schemes</p>
+          <h3 class="text-xl font-bold">Education & Learning</h3>
+        </div>
+
+        <div class="text-center">
+          <img src="\static\assets\health.png" alt="Health" class="mx-auto w-16 h-16">
+          <p class="text-green-700 font-semibold text-lg">214 Schemes</p>
+          <h3 class="text-xl font-bold">Health & Wellness</h3>
+        </div>
+
+        <div class="text-center">
+          <img src="\static\assets\shelter.png" alt="Housing" class="mx-auto w-16 h-16">
+          <p class="text-green-700 font-semibold text-lg">93 Schemes</p>
+          <h3 class="text-xl font-bold">Housing & Shelter</h3>
+        </div>
+
+        <div class="text-center">
+          <img src="\static\assets\safety.png" alt="Law" class="mx-auto w-16 h-16">
+          <p class="text-green-700 font-semibold text-lg">10 Schemes</p>
+          <h3 class="text-xl font-bold">Public Safety, Law & Justice</h3>
+        </div>
+
+        <div class="text-center">
+          <img src="\static\assets\science.jpeg" alt="Science" class="mx-auto w-16 h-16">
+          <p class="text-green-700 font-semibold text-lg">61 Schemes</p>
+          <h3 class="text-xl font-bold">Science, IT & Communications</h3>
+        </div>
+
+        <div class="text-center">
+          <img src="\static\assets\skills.png" alt="Skills" class="mx-auto w-16 h-16">
+          <p class="text-green-700 font-semibold text-lg">251 Schemes</p>
+          <h3 class="text-xl font-bold">Skills & Employment</h3>
+        </div>
+
+        <div class="text-center">
+          <img src="\static\assets\welfare.png" alt="Social Welfare" class="mx-auto w-16 h-16">
+          <p class="text-green-700 font-semibold text-lg">1232 Schemes</p>
+          <h3 class="text-xl font-bold">Social Welfare & Empowerment</h3>
+        </div>   
+
+        <div class="text-center">
+          <img src="\static\assets\sanitation.webp" alt="Social Welfare" class="mx-auto w-16 h-16">
+          <p class="text-green-700 font-semibold text-lg">35 Schemes</p>
+          <h3 class="text-xl font-bold">Utility and Sanitation</h3>
+        </div>  
+
+        <div class="text-center">
+          <img src="\static\assets\sport.jpg" alt="Social Welfare" class="mx-auto w-16 h-16">
+          <p class="text-green-700 font-semibold text-lg">116 Schemes</p>
+          <h3 class="text-xl font-bold">Sports and culture</h3>
+        </div>
+
+      </div>
+    </div>
+  </section>
+  <section class="py-12 px-6 bg-white">
+    <div class="container mx-auto text-center">
+      <h2 class="text-3xl font-bold mb-8">Easy steps to apply for Government Schemes</h2>
+      
+      <div class="flex flex-col md:flex-row justify-center items-center space-y-8 md:space-y-0 md:space-x-12">
+        
+        <!-- Step 1 -->
+        <div class="bg-gray-100 p-6 rounded-lg shadow-md w-72">
+          <h3 class="text-xl font-semibold text-green-700">Enter Details</h3>
+          <p class="text-gray-600 mt-2">Start by entering your <strong>basic details!</strong></p>
+        </div>
+
+        <!-- Arrow -->
+        <div class="hidden md:block text-gray-500 text-3xl">&#10145;</div>
+
+        <!-- Step 2 -->
+        <div class="bg-gray-100 p-6 rounded-lg shadow-md w-72">
+          <h3 class="text-xl font-semibold text-green-700">Search</h3>
+          <p class="text-gray-600 mt-2">Our search engine will <strong>find the relevant schemes!</strong></p>
+        </div>
+
+        <!-- Arrow -->
+        <div class="hidden md:block text-gray-500 text-3xl">&#10145;</div>
+
+        <!-- Step 3 -->
+        <div class="bg-gray-100 p-6 rounded-lg shadow-md w-72">
+          <h3 class="text-xl font-semibold text-green-700">Select & Apply</h3>
+          <p class="text-gray-600 mt-2"><strong>Select and apply</strong> for the best suited scheme</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+  <!-- Footer -->
+  <footer class="relative bg-gray-800 text-white pt-12 pb-6">
+    <!-- Wavy Top -->
+    <div class="absolute top-0 left-0 w-full overflow-hidden leading-none">
+      <svg class="relative block w-full h-16" viewBox="0 0 1440 320">
+        <path fill="#1f2937" fill-opacity="1" 
+          d="M0,96L48,122.7C96,149,192,203,288,192C384,181,480,107,576,80C672,53,768,75,864,101.3C960,128,1056,160,1152,154.7C1248,149,1344,107,1392,85.3L1440,64V0H0Z">
+        </path>
+      </svg>
+    </div>
+  
+    <!-- Footer Content -->
+    <div class="container mx-auto px-6 md:px-12 lg:px-20 relative">
+      <div class="flex flex-col md:flex-row justify-between items-center">
+  
+        <!-- Language Selector -->
+        <button class="bg-gray-700 text-white px-4 py-2 rounded-full flex items-center space-x-2 hover:bg-gray-600">
+          <span class="text-lg">🌐</span>
+          <span>English</span>
+        </button>
+  
+        <!-- Social Media Links -->
+        <div class="flex space-x-4 my-6 md:my-0">
+          <a href="#" class="text-gray-400 hover:text-white text-xl"><i class="fab fa-facebook"></i></a>
+          <a href="#" class="text-gray-400 hover:text-white text-xl"><i class="fab fa-instagram"></i></a>
+          <a href="#" class="text-gray-400 hover:text-white text-xl"><i class="fab fa-twitter"></i></a>
+          <a href="#" class="text-gray-400 hover:text-white text-xl"><i class="fab fa-tiktok"></i></a>
+          <a href="#" class="text-gray-400 hover:text-white text-xl"><i class="fab fa-youtube"></i></a>
+          <a href="#" class="text-gray-400 hover:text-white text-xl"><i class="fab fa-linkedin"></i></a>
+        </div>
+  
+        <!-- Legal Links -->
+        <div class="flex flex-wrap justify-center md:justify-end space-x-4 text-sm">
+          <a href="#" class="hover:underline">Terms of Service</a>
+          <a href="#" class="hover:underline">Privacy Policy</a>
+          <a href="#" class="hover:underline">Cookie Policy</a>
+          <a href="#" class="hover:underline">Imprint</a>
+        </div>
+  
+      </div>
+  
+      <!-- Branding -->
+      <div class="text-center text-sm text-gray-400 mt-6">
+        © Zahara, All Rights Reserved.
+      </div>
+    </div>
+  </footer>
+  
+  <!-- FontAwesome for Social Icons -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/js/all.min.js" crossorigin="anonymous"></script>
+
+  
+
+
+
+  <script>
+    const images = ["/static/assets/1.png", "/static/assets/x02.png", "/static/assets/x03.png", "/static/assets/x04.png"];
+    const quotes = [
+      '"Believe you can and you are halfway there." ',
+      '"I have always followed whatever I wanted to be."',
+      '"A journey of a thousand miles begins with a single step."',
+      '"A strong woman looks a challenge in the eye and gives it a wink."'
+    ];
+    
+    let index = 0;
+    function changeContent() {
+      index = (index + 1) % images.length;
+      
+      const imageElement = document.getElementById("image");
+      const quoteElement = document.getElementById("quote");
+      const circleElement = document.getElementById("circle");
+
+      // Move the circle to the right
+      circleElement.style.left = "75%";
+
+      // Fade out image and quote
+      imageElement.style.opacity = 0;
+      quoteElement.style.opacity = 0;
+
+      setTimeout(() => {
+        // Change image and quote
+        imageElement.src = images[index];
+        quoteElement.textContent = quotes[index];
+
+        // Fade in new image and quote
+        imageElement.style.opacity = 1;
+        quoteElement.style.opacity = 1;
+
+        // Move the circle back to the original position
+        circleElement.style.left = "55%";
+      }, 1000);
+    }
+    
+    setInterval(changeContent, 5000);
+  </script>
+</body>
+</html>
