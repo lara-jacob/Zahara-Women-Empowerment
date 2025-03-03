@@ -28,7 +28,7 @@ def home():
 
 @app.route('/login')
 def login_page():
-    return render_template("login.html") 
+    return render_template('login.html')
 
 @app.route("/profile")
 def profile():

@@ -107,8 +107,8 @@
 <body>
 
     <!-- Background: home.html -->
-    <iframe src="{{ url_for('home') }}" class="background-page"></iframe>
-
+    <iframe src="{{ url_for('home') }}" class="background-page">
+    </iframe>
     <!-- Foreground (index.html content) -->
     <div class="slide-container">
         <div class="content">
@@ -138,11 +138,14 @@
             setTimeout(() => {
                 document.querySelector(".slide-container").classList.add("fade-out");
     
-                // Wait for transition before fully switching
-                
+                // Redirect to home.html after fade-out
+                setTimeout(() => {
+                    window.location.href = "{{ url_for('home') }}"; // Flask route for home.html
+                }, 100); // Ensure the transition completes before redirecting
             }, 4000);
         });
     </script>
+    
 
 </body>
 </html>
