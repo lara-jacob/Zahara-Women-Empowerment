@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Zahara Login and Signup</title>
+
     <style>
         * {
             margin: 0;
@@ -13,13 +14,15 @@
         }
 
         body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            background: #f7f7f7;
-            overflow: hidden;
-        }
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    overflow: hidden;
+    background: url("{{ url_for('static', filename='/assets/bg0.webp') }}") no-repeat center center fixed;
+    background-size: cover;
+}
+
 
         .container {
             position: relative;
@@ -30,6 +33,45 @@
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
             overflow: hidden;
         }
+
+        .navbar {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 100px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 10;
+        }
+
+        .navbar .logo {
+            color: #fff;
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .navbar ul {
+            list-style: none;
+            display: flex;
+        }
+
+        .navbar ul li {
+            margin: 0 15px;
+        }
+
+        .navbar ul li a {
+            color: #000000;
+            text-decoration: none;
+            font-size: 18px;
+            transition: color 0.3s;
+        }
+        .navbar ul li a:hover {
+    color: #000000;
+    text-decoration: underline;
+}
+
 
         .form-container {
             position: absolute;
@@ -82,6 +124,7 @@
             border: 1px solid #ccc;
             border-radius: 5px;
             font-size: 12px;
+            background: rgba(255, 255, 255, 0.6); /* Semi-transparent input fields */
         }
 
         .form-group button {
@@ -142,6 +185,14 @@
     </style>
 </head>
 <body>
+    <nav class="navbar">
+        <div class="logo">Zahara</div>
+        <ul>
+            <li><a href="{{ url_for('home') }}">HOME</a></li>
+            <li><a href="{{ url_for('login_page') }}">LOGIN/SIGN UP</a></li>
+            <li><a href="#">ABOUT US</a></li>
+        </ul>
+    </nav>
     <div class="container">
         <div class="form-container" id="form-container">
             <!-- Sign Up Section -->
@@ -255,6 +306,10 @@ document.getElementById("login-btn").addEventListener("click", async (e) => {
 
     const result = await response.json();
     alert(result.message || result.error);
+
+    if (response.status === 200) {
+        window.location.href = "{{ url_for('profile') }}";
+    }
 });
 
 
