@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zahara - Explore Women’s Schemes</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <style>
+        /* Google Font */
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+
+        /* Reset Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(to right, #f8f4ff, #e6e6fa);
+            display: flex;
+            height: 100vh;
+            padding: 20px;
+        }
+
+        /* Sidebar Filter */
+        .sidebar {
+            width: 280px;
+            background: rgba(255, 255, 255, 0.3);
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .sidebar h2 {
+            font-size: 1.4rem;
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        .filter-group {
+            margin-bottom: 15px;
+        }
+
+        .filter-group label {
+            display: flex;
+            align-items: center;
+            margin-bottom: 8px;
+            font-size: 1rem;
+            color: #444;
+        }
+
+        .filter-group input {
+            margin-right: 10px;
+            accent-color: #ff6b6b;
+        }
+
+        /* Content Section */
+        .content {
+            flex: 1;
+            margin-left: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .content h1 {
+            font-size: 2rem;
+            color: #333;
+            margin-bottom: 15px;
+        }
+
+        /* Scheme Cards Grid */
+        .scheme-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            width: 100%;
+            max-width: 1000px;
+        }
+
+        .scheme-card {
+            background: rgba(255, 255, 255, 0.3);
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+        }
+
+        .scheme-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .scheme-card h3 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .scheme-card p {
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 15px;
+        }
+
+        .scheme-card .learn-more {
+            background: #ff6b6b;
+            color: #fff;
+            padding: 8px 16px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: background 0.3s ease-in-out;
+        }
+
+        .scheme-card .learn-more:hover {
+            background: #ff3b3b;
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- Sidebar Filters -->
+    <div class="sidebar">
+        <h2>Filters</h2>
+
+        <div class="filter-group">
+            <h3>Age</h3>
+            <label><input type="checkbox"> 18-25</label>
+            <label><input type="checkbox"> 26-35</label>
+            <label><input type="checkbox"> 36+</label>
+        </div>
+
+        <div class="filter-group">
+            <h3>Marital Status</h3>
+            <label><input type="checkbox"> Single</label>
+            <label><input type="checkbox"> Married</label>
+        </div>
+
+        <div class="filter-group">
+            <h3>State</h3>
+            <label><input type="checkbox"> Kerala</label>
+            <label><input type="checkbox"> Maharashtra</label>
+        </div>
+
+        <div class="filter-group">
+            <h3>Area of Residence</h3>
+            <label><input type="checkbox"> Urban</label>
+            <label><input type="checkbox"> Rural</label>
+        </div>
+
+        <div class="filter-group">
+            <h3>Category</h3>
+            <label><input type="checkbox"> Education</label>
+            <label><input type="checkbox"> Health</label>
+            <label><input type="checkbox"> Business</label>
+        </div>
+
+        <div class="filter-group">
+            <h3>Differently Abled</h3>
+            <label><input type="checkbox"> Yes</label>
+            <label><input type="checkbox"> No</label>
+        </div>
+
+        <div class="filter-group">
+            <h3>Minority</h3>
+            <label><input type="checkbox"> Yes</label>
+            <label><input type="checkbox"> No</label>
+        </div>
+
+        <div class="filter-group">
+            <h3>APL / BPL</h3>
+            <label><input type="checkbox"> APL</label>
+            <label><input type="checkbox"> BPL</label>
+        </div>
+    </div>
+
+    <!-- Content Section -->
+    <div class="content">
+        <h1>Explore Women’s Schemes</h1>
+
+        <div class="scheme-container">
+            <div class="scheme-card">
+                <h3>Education Scheme</h3>
+                <p>Scholarships for women pursuing higher education.</p>
+                <a href="#" class="learn-more">Learn More</a>
+            </div>
+
+            <div class="scheme-card">
+                <h3>Health Support</h3>
+                <p>Free medical support for women under government schemes.</p>
+                <a href="#" class="learn-more">Learn More</a>
+            </div>
+
+            <div class="scheme-card">
+                <h3>Business Grants</h3>
+                <p>Funding opportunities for women entrepreneurs.</p>
+                <a href="#" class="learn-more">Learn More</a>
+            </div>
+
+            <div class="scheme-card">
+                <h3>Housing Assistance</h3>
+                <p>Government aid for women to purchase homes.</p>
+                <a href="#" class="learn-more">Learn More</a>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
