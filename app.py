@@ -10,7 +10,7 @@ CORS(app)  # Allows frontend to communicate with backend
 DB_CONFIG = {
     "host": "localhost",
     "user": "root",  # Change if needed
-    "password": "root123",  # Change this to your MySQL password
+    "password": "@Vasumathi2004",  # Change this to your MySQL password
     "database": "zaharadb"
 }
 
