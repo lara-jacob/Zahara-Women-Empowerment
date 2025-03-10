@@ -3,7 +3,7 @@ from flask_cors import CORS
 import mysql.connector
 from werkzeug.security import generate_password_hash, check_password_hash
 
-app = Flask(_name_)
+app = Flask(__name__)
 app.secret_key = "your_secret_key"  # Secret key for session management
 CORS(app)  # Allows frontend to communicate with backend
 
@@ -30,6 +30,10 @@ def home():
 @app.route('/login')
 def login_page():
     return render_template('login.html')
+
+@app.route('/explore')
+def explore():
+    return render_template('explore.html')
 
 @app.route("/profile")
 def profile():
@@ -113,5 +117,5 @@ def logout():
     session.pop("user", None)
     return redirect(url_for("login_page"))
 
-if _name_ == '_main_':
+if __name__ == '__main__':
     app.run(debug=True)
