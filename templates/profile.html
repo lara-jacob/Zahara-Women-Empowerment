@@ -35,34 +35,11 @@ header {
     height: auto;
 }
 
-/* Navigation */
-nav ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    display: flex;
-}
-
-nav ul li {
-    margin: 0 20px;
-}
-
-nav ul li a {
-    color: #000;
-    text-decoration: none;
-    font-weight: 600;
-    transition: color 0.3s ease-in-out;
-}
-
-nav ul li a:hover {
-    color: #C59172;
-}
-
 /* Profile Container */
 .profile-container {
     display: flex;
     justify-content: center;
-    margin-top: 40px;
+    margin-top: 100px;
 }
 
 .profile-card {
@@ -231,28 +208,55 @@ footer {
         width: 90%;
     }
 }
+
+.navbar {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 30px;
+            top: 0;
+            left: -90px;
+            z-index: 10;
+        }
+
+
+        .navbar ul {
+            list-style: none;
+            display: flex;
+        }
+
+        .navbar ul li {
+            margin: 0 15px;
+        }
+
+        .navbar ul li a {
+            color: #000000;
+            font-size: 15px;
+            transition: color 0.3s;
+        }
+        .navbar ul li a:hover {
+            color: #000000;
+            text-decoration: underline;
+        }
 </style>
 </head>
 <body>
 
-    <!-- Header Section -->
-    <header>
         <div class="header-container">
-            <a href="index.html">
-                <img src="\static\assets\name.png" alt="Website Logo" class="logo">
-            </a>
-            <nav>
+            <img src="/static/assets/name.png" alt="Logo" class="logo">
+            <nav class="navbar">
+                <div class="logo">Zahara</div>
                 <ul>
-                    <li><a href="index.html">HOME</a></li>
-                    <li><a href="#">GOVERNMENT SCHEMES</a></li>
-                    <li><a href="#">RESOURCES</a></li>
-                    <li><a href="#">SUPPORT & HELP</a></li>
-                    <li><a href="#">LOGOUT</a></li>
+                    <li><a href="{{ url_for('home') }}">HOME</a></li>
+                    <li><a href="{{ url_for('login_page') }}">LOGIN/SIGN UP</a></li>
+                    <li><a href="#">ABOUT US</a></li>
                 </ul>
             </nav>
+        
         </div>
-    </header>
 
+    
     <!-- Profile Section -->
     <div class="profile-container">
         <div class="profile-card">
@@ -262,22 +266,22 @@ footer {
                     <label for="upload-photo"><i class="fas fa-camera"></i></label>
                     <input type="file" id="upload-photo" accept="image/*">
                 </div>
-                <h2>Jane Doe</h2>
+                <h2>{% if user %} {{ user.name }} {% else %} User {% endif %}</h2>
                 <p class="profile-role">Registered Beneficiary</p>
             </div>
 
             <div class="profile-details">
                 <h3>Personal Details</h3>
-                <p><strong>Name:</strong> Jane Doe</p>
-                <p><strong>Email:</strong> jane.doe@example.com</p>
-                <p><strong>Phone:</strong> +91 9876543210</p>
-                <p><strong>State:</strong> Maharashtra</p>
+                {% if user %}
+                <p><strong>Name:</strong> {{ user.name }}</p>
+                <p><strong>Email:</strong> {{ user.email }}</p>
+            {% else %}
+                <p>User details could not be loaded.</p>
+            {% endif %}
 
                 <h3>My Schemes</h3>
                 <ul class="scheme-list">
-                    <li>Beti Bachao Beti Padhao</li>
-                    <li>PM Ujjwala Yojana</li>
-                    <li>Maternity Benefit Program</li>
+                    <li>Not yet applied</li>
                 </ul>
 
                 <h3>Actions</h3>
