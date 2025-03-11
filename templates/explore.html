@@ -4,481 +4,188 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Zahara - Explore Women’s Schemes</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
-
-        * {
+        body {
+            font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
-            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(to right, #ffecd2, #fcb69f);
         }
-
-        body {
-            background: linear-gradient(to right, #fff5e6, #ffcc80);
+        .container {
             display: flex;
-            height: 100vh;
             padding: 20px;
         }
-
-        .sidebar {
-            width: 300px;
-            background: rgba(255, 255, 255, 0.8);
+        .filters {
+            width: 250px;
+            background: #fbe9d4;
             padding: 20px;
-            border-radius: 15px;
-            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
-            backdrop-filter: blur(10px);
-            display: flex;
-            flex-direction: column;
+            border-radius: 10px;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
         }
-
-        .sidebar h2 {
-            font-size: 1.5rem;
-            margin-bottom: 15px;
-            color: #e65100;
+        .filters h2 {
+            color: #d65a00;
         }
-
-        .filter-group {
-            margin-bottom: 15px;
+        .filters label {
+            display: block;
+            margin: 10px 0;
         }
-
-        .filter-group h3 {
-            font-size: 1.2rem;
-            color: #ff8c00;
-            margin-bottom: 8px;
-        }
-
-        .filter-group label {
-            display: flex;
-            align-items: center;
-            margin-bottom: 8px;
-            font-size: 1rem;
-            color: #444;
-        }
-
-        .filter-group input {
+        .filters input {
             margin-right: 10px;
-            accent-color: #e65100;
         }
-
         .content {
             flex: 1;
             margin-left: 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
         }
-
         .content h1 {
-            font-size: 2rem;
-            color: #e65100;
-            margin-bottom: 15px;
-        }
-
-        .scheme-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-            width: 100%;
-            max-width: 1000px;
-        }
-
-        .scheme-card {
-            background: rgba(255, 255, 255, 0.9);
-            padding: 20px;
-            border-radius: 15px;
-            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+            color: #d65a00;
             text-align: center;
-            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
         }
-
-        .scheme-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 20px rgba(0, 0, 0, 0.2);
+        .schemes {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            padding: 20px;
         }
-
+        .scheme-card {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
         .scheme-card h3 {
-            color: #e65100;
-            margin-bottom: 10px;
+            color: #d65a00;
         }
-
         .scheme-card p {
-            font-size: 0.9rem;
-            color: #666;
-            margin-bottom: 15px;
+            color: #555;
         }
-
-        .scheme-card .learn-more {
-            background: #ff8c00;
-            color: #fff;
-            padding: 8px 16px;
-            border-radius: 8px;
-            text-decoration: none;
-            font-size: 0.9rem;
-            transition: background 0.3s ease-in-out;
+        .scheme-card button {
+            background: #ff6f00;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
         }
-
-        .scheme-card .learn-more:hover {
-            background: #e65100;
+        .scheme-card button:hover {
+            background: #e65c00;
         }
     </style>
-    <div id="schemeModal" class="modal">
-        <div class="modal-content">
-            <span class="close">&times;</span>
-            <h2 id="modalTitle"></h2>
-            <p id="modalDescription"></p>
-            <a id="modalLink" href="#" target="_blank" style="display: inline-block; margin-top: 10px; padding: 8px 12px; background: #007bff; color: white; text-decoration: none; border-radius: 5px;">Visit Scheme Website</a>
-        </div>
-    </div>
-    
-    <!-- Modal (Place this at the bottom of your page, outside scheme cards) -->
-
-    <!-- Modal (Place this at the bottom of your page, outside scheme cards) -->
-<div id="schemeModal" class="modal">
-    <div class="modal-content">
-        <span class="close" onclick="closeModal()">&times;</span>
-        <h3 id="modalTitle"></h3>
-        <p id="modalDescription"></p>
-        <a id="modalLink" href="#" target="_blank" class="modal-button">Visit Website</a>
-    </div>
+</head>
+<div id="schemeModal" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+background: white; padding: 20px; box-shadow: 2px 2px 10px rgba(0,0,0,0.3); border-radius: 10px;">
+    <h2 id="schemeTitle"></h2>
+    <p id="schemeDesc"></p>
+    <button onclick="closeModal()">Close</button>
 </div>
 
-<script>
-    function openModal(title, description, link) {
-        document.getElementById("modalTitle").textContent = title;
-        document.getElementById("modalDescription").textContent = description;
-        
-        let modalLink = document.getElementById("modalLink");
-        modalLink.href = link;
-        modalLink.style.display = link ? "inline-block" : "none"; // Hide if no link provided
-        
-        document.getElementById("schemeModal").style.display = "block";
-    }
-
-    function closeModal() {
-        document.getElementById("schemeModal").style.display = "none";
-    }
-
-    // Close modal when clicking outside of it
-    window.addEventListener("click", function (event) {
-        const modal = document.getElementById("schemeModal");
-        if (event.target === modal) {
-            closeModal();
-        }
-    });
-</script>
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        const filters = document.querySelectorAll(".filter");
-        const schemeCards = document.querySelectorAll(".scheme-card");
-    
-        filters.forEach(filter => {
-            filter.addEventListener("change", applyFilters);
-        });
-    
-        function applyFilters() {
-            let selectedFilters = {
-                age: getCheckedValues("age"),
-                marital: getCheckedValues("marital"),
-                state: getCheckedValues("state"),
-                residence: getCheckedValues("residence"),
-                category: getCheckedValues("category")
-            };
-    
-            schemeCards.forEach(card => {
-                let cardAge = card.getAttribute("data-age");
-                let cardMarital = card.getAttribute("data-marital");
-                let cardState = card.getAttribute("data-state");
-                let cardResidence = card.getAttribute("data-residence");
-                let cardCategory = card.getAttribute("data-category");
-    
-                let matchesAge = matchesFilter(selectedFilters.age, cardAge);
-                let matchesMarital = matchesFilter(selectedFilters.marital, cardMarital);
-                let matchesState = matchesFilter(selectedFilters.state, cardState);
-                let matchesResidence = matchesFilter(selectedFilters.residence, cardResidence);
-                let matchesCategory = matchesFilter(selectedFilters.category, cardCategory);
-    
-                if (matchesAge && matchesMarital && matchesState && matchesResidence && matchesCategory) {
-                    card.style.display = "block";
-                } else {
-                    card.style.display = "none";
-                }
-            });
-        }
-    
-        function getCheckedValues(filterType) {
-            return Array.from(document.querySelectorAll(`.filter[data-filter="${filterType}"]:checked`)).map(input => input.value);
-        }
-    
-        function matchesFilter(selectedValues, cardValue) {
-            return selectedValues.length === 0 || selectedValues.includes(cardValue) || cardValue === "All";
-        }
-    });
-    </script>
-    
-<script>
-    function openModal(title, description, link) {
-        document.getElementById("modalTitle").textContent = title;
-        document.getElementById("modalDescription").textContent = description;
-        var modalLink = document.getElementById("modalLink");
-
-        if (link) {
-            modalLink.href = link;
-            modalLink.style.display = "inline-block"; // Show the link
-        } else {
-            modalLink.style.display = "none"; // Hide if no link
-        }
-
-        document.getElementById("schemeModal").style.display = "block";
-    }
-
-    function closeModal() {
-        document.getElementById("schemeModal").style.display = "none";
-    }
-
-    window.onclick = function(event) {
-        var modal = document.getElementById("schemeModal");
-        if (event.target === modal) {
-            closeModal();
-        }
-    }
-</script>
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        const filters = document.querySelectorAll(".filter");
-
-        filters.forEach(filter => {
-            filter.addEventListener("change", applyFilters);
-        });
-
-        function applyFilters() {
-            const selectedFilters = {
-                age: getCheckedValues("age"),
-                marital: getCheckedValues("marital"),
-                state: getCheckedValues("state"),
-            };
-
-            document.querySelectorAll(".scheme-card").forEach(card => {
-                let matches = true;
-
-                if (selectedFilters.age.length > 0 && !selectedFilters.age.includes(card.dataset.age)) matches = false;
-                if (selectedFilters.marital.length > 0 && !selectedFilters.marital.includes(card.dataset.marital)) matches = false;
-                if (selectedFilters.state.length > 0 && !selectedFilters.state.includes(card.dataset.state)) matches = false;
-
-                card.style.display = matches ? "block" : "none";
-            });
-        }
-
-        function getCheckedValues(filterType) {
-            return Array.from(document.querySelectorAll(`.filter[data-filter="${filterType}"]:checked`))
-                        .map(input => input.value);
-        }
-    });
-</script>
-<style>
-    /* Modal Styling */
-    .modal {
-        display: none;
-        position: fixed;
-        z-index: 1000;
-        left: 50%;
-        top: 50%;
-        transform: translate(-50%, -50%);
-        width: 50%;
-        max-width: 500px;
-        background: white;
-        padding: 20px;
-        border-radius: 10px;
-        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
-        text-align: center;
-    }
-    .modal-content {
-        position: relative;
-    }
-    .close {
-        cursor: pointer;
-        font-size: 24px;
-        font-weight: bold;
-        position: absolute;
-        top: 10px;
-        right: 15px;
-    }
-    .modal-button {
-        display: inline-block;
-        margin-top: 15px;
-        padding: 10px 20px;
-        background-color: #007bff;
-        color: white;
-        text-decoration: none;
-        border-radius: 5px;
-        font-size: 16px;
-    }
-    .modal-button:hover {
-        background-color: #0056b3;
-    }
-</style>
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        const filters = document.querySelectorAll(".filter");
-
-        filters.forEach(filter => {
-            filter.addEventListener("change", applyFilters);
-        });
-
-        function applyFilters() {
-            const selectedFilters = {
-                age: getCheckedValues("age"),
-                marital: getCheckedValues("marital"),
-                state: getCheckedValues("state"),
-            };
-
-            document.querySelectorAll(".scheme-card").forEach(card => {
-                let matches = true;
-
-                if (selectedFilters.age.length > 0 && !selectedFilters.age.includes(card.dataset.age)) matches = false;
-                if (selectedFilters.marital.length > 0 && !selectedFilters.marital.includes(card.dataset.marital)) matches = false;
-                if (selectedFilters.state.length > 0 && !selectedFilters.state.includes(card.dataset.state)) matches = false;
-
-                card.style.display = matches ? "block" : "none";
-            });
-        }
-
-        function getCheckedValues(filterType) {
-            return Array.from(document.querySelectorAll(`.filter[data-filter="${filterType}"]:checked`))
-                        .map(input => input.value);
-        }
-    });
-</script>
-</head>
 <body>
-    <div class="sidebar">
-        <h2>Filters</h2>
-        <div class="filter-group">
+    <div class="container">
+        <div class="filters">
+            <h2>Filters</h2>
             <h3>Age</h3>
-            <label><input type="checkbox" class="filter" data-filter="age" value="18-25"> 18-25</label>
-            <label><input type="checkbox" class="filter" data-filter="age" value="26-35"> 26-35</label>
-            <label><input type="checkbox" class="filter" data-filter="age" value="36+"> 36+</label>
-        </div>
-        <div class="filter-group">
+            <label><input type="checkbox" class="filter" value="18-25"> 18-25</label>
+            <label><input type="checkbox" class="filter" value="26-35"> 26-35</label>
+            <label><input type="checkbox" class="filter" value="36+"> 36+</label>
+            
             <h3>Marital Status</h3>
-            <label><input type="checkbox" class="filter" data-filter="marital" value="Single"> Single</label>
-            <label><input type="checkbox" class="filter" data-filter="marital" value="Married"> Married</label>
-            <label><input type="checkbox" class="filter" data-filter="marital" value="Widow"> Widow</label>
-            <label><input type="checkbox" class="filter" data-filter="marital" value="All"> All</label>
-        </div>
-        <div class="filter-group">
+            <label><input type="checkbox" class="filter" value="Single"> Single</label>
+            <label><input type="checkbox" class="filter" value="Married"> Married</label>
+            <label><input type="checkbox" class="filter" value="Widow"> Widow</label>
+            <label><input type="checkbox" class="filter" value="All"> All</label>
+            
             <h3>State</h3>
-            <label><input type="checkbox" class="filter" data-filter="state" value="All India"> All India</label>
-            <label><input type="checkbox" class="filter" data-filter="state" value="Goa"> Goa</label>
-            <label><input type="checkbox" class="filter" data-filter="state" value="Kerala"> Kerala</label>
-            <label><input type="checkbox" class="filter" data-filter="state" value="Gujarat"> Gujarat</label>
-            <label><input type="checkbox" class="filter" data-filter="state" value="Tamil Nadu"> Tamil Nadu</label>
-            <label><input type="checkbox" class="filter" data-filter="state" value="Maharashtra"> Maharashtra</label>
-        </div>
-        <div class="filter-group">
+            <label><input type="checkbox" class="filter" value="All India"> All India</label>
+            <label><input type="checkbox" class="filter" value="Goa"> Goa</label>
+            <label><input type="checkbox" class="filter" value="Kerala"> Kerala</label>
+            <label><input type="checkbox" class="filter" value="Gujarat"> Gujarat</label>
+            <label><input type="checkbox" class="filter" value="Tamil Nadu"> Tamil Nadu</label>
+            
             <h3>Area of Residence</h3>
-            <label><input type="checkbox" class="filter" data-filter="residence" value="Urban"> Urban</label>
-            <label><input type="checkbox" class="filter" data-filter="residence" value="Rural"> Rural</label>
-            <label><input type="checkbox" class="filter" data-filter="residence" value="All"> All</label>
-        </div>
-        <div class="filter-group">
+            <label><input type="checkbox" class="filter" value="Urban"> Urban</label>
+            <label><input type="checkbox" class="filter" value="Rural"> Rural</label>
+            <label><input type="checkbox" class="filter" value="All"> All</label>
+            
             <h3>Category</h3>
-            <label><input type="checkbox" class="filter" data-filter="category" value="Education"> Education</label>
-            <label><input type="checkbox" class="filter" data-filter="category" value="Health"> Health</label>
-            <label><input type="checkbox" class="filter" data-filter="category" value="Business"> Business</label>
-            <label><input type="checkbox" class="filter" data-filter="category" value="Women Welfare"> Women Welfare</label>
-            <label><input type="checkbox" class="filter" data-filter="category" value="Financial Support"> Financial Support</label>
-            <label><input type="checkbox" class="filter" data-filter="category" value="Women Empowerment"> Women Empowerment</label>
-            <label><input type="checkbox" class="filter" data-filter="category" value="Marriage Assistance"> Marriage Assistance</label>
-            <label><input type="checkbox" class="filter" data-filter="category" value="Employment"> Employment</label>
-            <label><input type="checkbox" class="filter" data-filter="category" value="Pension"> Pension</label>
-            <label><input type="checkbox" class="filter" data-filter="category" value="Gas Connection"> Gas Connection</label>
+            <label><input type="checkbox" class="filter" value="Education"> Education</label>
+            <label><input type="checkbox" class="filter" value="Health"> Health</label>
+            <label><input type="checkbox" class="filter" value="Business"> Business</label>
+            <label><input type="checkbox" class="filter" value="Women Welfare"> Women Welfare</label>
+            <label><input type="checkbox" class="filter" value="Financial Support"> Financial Support</label>
+            <label><input type="checkbox" class="filter" value="Women Empowerment"> Women Empowerment</label>
+            <label><input type="checkbox" class="filter" value="Marriage Assistance"> Marriage Assistance</label>
+            <label><input type="checkbox" class="filter" value="Employment"> Employment</label>
+            <label><input type="checkbox" class="filter" value="Pension"> Pension</label>
+            <label><input type="checkbox" class="filter" value="Gas Connection"> Gas Connection</label>
         </div>
-    </div>
-    <div class="content">
-        <h1>Explore Women’s Schemes</h1>
-        <div class="scheme-container" >
-            <div class="scheme-card" data-age="18-25" data-marital="Single" data-state="All India" data-residence="Rural" data-category="Education">
-                <h3>Savitribai Jyotirao Phule Fellowship For Single Girl Child</h3>
-                <p>Financial assistance for single girl children pursuing a PhD in Social Sciences.</p>
-                <a href="#" class="learn-more" onclick="openModal('Savitribai Jyotirao Phule Fellowship', 'Savitribai Jyotirao Phule Fellowship for Single Girl Child (SJSGC) is a Fellowship Scheme by the University Grants Commission (UGC), Department of Higher Education, for pursuing research work leading to the award of a Ph.D. degree. The target group of this scheme are the ‘single girl child’, i.e. the only girl child in the family without having any brother or sister. A girl scholar who is one of the twin daughters/fraternal daughters is also eligible to apply for fellowship under the scheme. The number of slots for the fellowship will be decided every year on the basis of eligible applications complete in all respects, received through online mode.')">Learn More</a>
-
-            </div>
-            <div class="scheme-card" data-age="All" data-marital="All" data-state="All India" data-residence="All" data-category="Women Welfare">
-                <h3>Nari Niketans</h3>
-                <p>Shelter and rehabilitation for destitute and abandoned women.</p>
-                <a href="#" class="learn-more" onclick="openModal('Nari Niketans','The Nari Niketans were established in 1976 by the Social Welfare Department, Govt. of Jammu and Kashmir wherein deserted /destitute ladies/ widows having no means of livelihood are given admissions. There are seven Nari Niketan in Jammu & Kashmir, i.e. in Jammu, Udhampur, Kathua, Doda, Rajouri, and two Nari Niketans in Poonch, with a total intake capacity of 280. The inmate shall remain in the institution till they are rehabilitated/get married/covered under any schemes for employment and self-employment. The beneficiary shall approach the concerned District Social Welfare Officer (DSWO) for submission of the application. This is a 100% State Sponsored Scheme, and only the permanent residents of the state of Jammu & Kashmir can apply for this scheme.')">Learn More</a>
-            </div>
-            <div class="scheme-card" data-age="18-40" data-marital="Single" data-state="Goa" data-residence="All" data-category="Financial Support">
-                <h3>Laadli Laxmi Scheme</h3>
-                <p>Financial assistance for girl children to support education and marriage.</p>
-                <a href="#" class="learn-more" onclick="openModal('Laadli Laxmi Scheme','Laadli Laxmi Scheme was launched on 6th July 2012 as one of the flagship programmes of the Department of Women & Child Development, Government of Goa with the intention to address the undesirable tendency of female foeticides and with an aim towards erasing the general perception that the birth of a girl in the family is the burden on her parents/guardian during her marriage. The objective of the scheme is to financially empower the girl child to meet educational and other expenses on becoming a major of age and to improve the female sex ratio in the State.')">Learn More</a>
-            </div>
-            <div class="scheme-card" data-age="18-60" data-marital="All" data-state="Gujarat" data-residence="All" data-category="Women Empowerment">
-                <h3>Mukhyamantri Mahila Utkarsh Yojana</h3>
-                <p>Interest-free loans for women’s self-help groups to promote entrepreneurship.</p>
-                <a href="#" class="learn-more" onclick="openModal('Mukhyamantri Mahila Utkarsh Yojana','Under the scheme, the government provides interest-free loans of up to Rs. 1 lakh to women entrepreneurs who wish to start a new business or expand their existing one. The loans are provided without any collateral security, and the repayment period is up to five years.The scheme also provides training and skill development programs to women entrepreneurs to help them build their business acumen and enhance their knowledge of entrepreneurship. The Mukhyamantri Mahila Utkarsh Yojana is a great initiative to promote womens entrepreneurship and to empower them to become financially independent. over the scheme name, launch date, ministry/dept. name, target beneficiary, benefits, etc.')">Learn More</a>
-            </div>
-            <div class="scheme-card" data-age="18-40" data-marital="All" data-state="All India" data-residence="All" data-category="Health">
-                <h3>Assistance For Delivery / Miscarriage Of Pregnancy / Termination Of Pregnancy To Female Differently Abled Person</h3>
-                <p>Financial aid for differently-abled women for maternity and medical care.</p>
-                <a href="#" class="learn-more" onclick="openModal('Assistance For Delivery / Miscarriage Of Pregnancy / Termination Of Pregnancy To Female Differently Abled Person','The Government of Tamil Nadu introduced Assistance for Delivery or Miscarriage of Pregnancy or Termination of Pregnancy to Female Differently Abled Person with a sum of Rs.6,000 @ Rs.1,000 per month for delivery and Rs.3,000 for miscarriage or termination of pregnancy is given to female differently abled person. ')">Learn More</a>
-            </div>
-            <div class="scheme-card" data-age="18-30" data-marital="Single" data-state="All India" data-residence="All" data-category="Marriage Assistance">
-                <h3>Grant of Financial Assistance for Performance of Marriage of Poor Brides Living Below Poverty Line</h3>
-                <p>Monetary support for the marriage of girls from BPL families.</p>
-                <a href="#" class="learn-more" onclick="openModal('Grant of Financial Assistance for Performance of Marriage of Poor Brides Living Below Poverty Line','The scheme Grant of Financial Assistance for Performance of Marriage of Poor Brides Living Below Poverty Line is a financial assistance scheme by the Department of Women and Child Development, Government of Puducherry. This scheme aims to provide financial assistance to poor brides living below the poverty line to meet their marriage expenses. The assistance amount is ₹15,000, and it is granted for the first marriage of the bride. The scheme is implemented through the Department of Women and Child Development.')">Learn More</a>
-            </div>
-            <div class="scheme-card" data-age="18-25" data-marital="Single" data-state="All India" data-residence="All" data-category="Education">
-                <h3>Post Graduate Indira Gandhi Scholarship For Single Girl Child</h3>
-                <p>Scholarship for single girl children pursuing postgraduate education.</p>
-                <a href="#" class="learn-more" onclick="openModal('Post Graduate Indira Gandhi Scholarship For Single Girl Child','A scholarship scheme by the University Grants Commission for Girl students who are admitted in the first year of PG courses in any designated university or a postgraduate college, and happen to be the only girl child in the family. The amount of fellowship is ₹ 36,200/- p.a. for the full duration of a PG course. The scheme has been introduced with an aim to compensate direct costs of girl education at all levels, especially for such girls who happen to be the only girl child in their families.')">Learn More</a>
-            </div>
-            <div class="scheme-card" data-age="18-50" data-marital="All" data-state="Gujarat" data-residence="All" data-category="Employment">
-                <h3>Asangathit Karmakaar Silai Machine Sahayata Yojana</h3>
-                <p>Free sewing machines for women in the unorganized sector to support self-employment.</p>
-                <a href="#" class="learn-more" onclick="openModal('Asangathit Karmakaar Silai Machine Sahayata Yojana','The Asangathit Karmakaar Silai Machine Sahayata Yojana (Unorganized Workers Sewing Machine Assistance Scheme) is a government scheme in Chhattisgarh State that provides sewing machines. The objective of this scheme is to promote unorganized workers in their businesses and make them self-reliant.')">Learn More</a>
-            </div>
-            <div class="scheme-card" data-age="18-25" data-marital="All" data-state="Tamil Nadu" data-residence="All" data-category="Education">
-                <h3>Award of Opportunity Cost to Parents of Scheduled Caste Girl Students</h3>
-                <p>Financial incentive for parents to encourage the education of SC girl students.</p>
-                <a href="#" class="learn-more" onclick="openModal('Award of Opportunity Cost to Parents of Scheduled Caste Girl Students','The scheme “Award of Opportunity Cost to Parents of Scheduled Caste Girl Students” was implemented by the Adi Dravidar Welfare Department, Government of Puducherry to financially assist the Scheduled Caste parents for sending school their daughters who otherwise earn livelihood for the family engaging themselves in menial labour.')">Learn More</a>
-            </div>
-            <div class="scheme-card" data-age="40+" data-marital="Widow" data-state="All India" data-residence="All" data-category="Pension">
-                <h3>Indira Gandhi National Widow Pension Scheme</h3>
-                <p>Monthly pension for widowed women living below the poverty line.</p>
-                <a href="#" class="learn-more" onclick="openModal('Indira Gandhi National Widow Pension Scheme','Indira Gandhi National Widow Pension Scheme (IGNWPS) is implemented by Ministry of Rural Development, Government of India. It is a non-contributory pension scheme to provide social security to widows of poor family (BPL)  of the society.')">Learn More</a>
-            </div>
-            <div class="scheme-card" data-age="18-40" data-marital="All" data-state="Tamil Nadu" data-residence="All" data-category="Financial Support">
-                <h3>KULAVILAKKU</h3>
-                <p>Financial assistance for destitute women belonging to Scheduled Castes in Tamil Nadu.</p>
-                <a href="#" class="learn-more" onclick="openModal('KULAVILAKKU','KULAVILAKKU is a scheme for pregnant women by the Department of Women and Child Development, Government of Puducherry. This scheme aims to enhance the nutritional status of Pregnant Women. ₹500/- assistance is provided to eligible beneficiaries during their pregnancies. The scheme is a crucial step towards ensuring the well-being of both mother and child. The benefit will be provided for upto two pregnancies only.')">Learn More</a>
-            </div>
-            <div class="scheme-card" data-age="18-60" data-marital="All" data-state="All India" data-residence="All" data-category="Gas Connection">
-                <h3>Pradhan Mantri Ujjwala Yojana</h3>
-                <p>Free LPG connections for women from economically weaker sections.</p>
-                <a href="#" class="learn-more"onclick="openModal('Pradhan Mantri Ujjwala Yojana','In May 2016, the Ministry of Petroleum and Natural Gas (MOPNG), introduced the ‘Pradhan Mantri Ujjwala Yojana’ (PMUY) as a flagship scheme with an objective to make clean cooking fuel such as LPG available to the rural and deprived households which were otherwise using traditional cooking fuels such as firewood, coal, cow-dung cakes etc. Usage of traditional cooking fuels had detrimental impacts on the health of rural women as well as on the environment.The scheme was launched on 1st May 2016 in Ballia, Uttar Pradesh by Hon’ble Prime Minister of India, Shri. Narendra Modi')">Learn More</a>
+        
+        <div class="content">
+            <h1>Explore Women’s Schemes</h1>
+            <div class="schemes" id="schemes">
+                <div class="scheme-card" data-category="Education">
+                    <h3>Savitribai Jyotirao Phule Fellowship For Single Girl Child</h3>
+                    <p>Financial assistance for single girl children pursuing a PhD in Social Sciences.</p>
+                    <button>Learn More</button>
+                </div>
+                <div class="scheme-card" data-category="Women Welfare">
+                    <h3>Nari Niketans</h3>
+                    <p>Shelter and rehabilitation for destitute and abandoned women.</p>
+                    <button>Learn More</button>
+                </div>
+                <div class="scheme-card" data-category="Financial Support">
+                    <h3>Laadli Laxmi Scheme</h3>
+                    <p>Financial assistance for girl children to support education and marriage.</p>
+                    <button>Learn More</button>
+                </div>
             </div>
         </div>
     </div>
-</body>
-<script>
-    function openModal(title, description) {
-        document.getElementById('modalTitle').textContent = title;
-        document.getElementById('modalDescription').textContent = description;
-        document.getElementById('schemeModal').style.display = 'flex';
-    }
-
-    document.querySelector('.close').addEventListener('click', function() {
-        document.getElementById('schemeModal').style.display = 'none';
-    });
-
-    window.onclick = function(event) {
-        let modal = document.getElementById('schemeModal');
-        if (event.target === modal) {
-            modal.style.display = 'none';
+    <script>
+        document.addEventListener("DOMContentLoaded", fetchSchemes);
+        
+        function fetchSchemes() {
+            fetch("/get_sche")
+                .then(response => response.json())
+                .then(data => {
+                    const schemesContainer = document.getElementById("schemes");
+                    schemesContainer.innerHTML = "";
+                    data.forEach(scheme => addSchemeCard(scheme));
+                })
+                .catch(error => console.error("Error fetching schemes:", error));
         }
-    };
-</script>
+        
+        function addSchemeCard(scheme) {
+            const schemesContainer = document.getElementById("schemes");
+            const card = document.createElement("div");
+            card.classList.add("scheme-card");
+            card.setAttribute("data-category", scheme.category);
+            
+            card.innerHTML = `
+                <h3>${scheme.name}</h3>
+                <p>${scheme.description.substring(0, 80)}...</p> <!-- Short description -->
+                <button onclick="showDetails(${scheme.id})">Learn More</button>
+            `;
+            
+            schemesContainer.appendChild(card);
+        }
+        
+        function showDetails(schemeId) {
+            fetch(`/get_scheme_details?id=${schemeId}`)
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById("schemeTitle").innerText = data.name;
+                    document.getElementById("schemeDesc").innerText = data.details;
+                    document.getElementById("schemeModal").style.display = "block";
+                })
+                .catch(error => console.error("Error fetching details:", error));
+        }
+        
+        // Close modal function
+        function closeModal() {
+            document.getElementById("schemeModal").style.display = "none";
+        }
+        </script>
+        
+
+</body>
 </html>

@@ -24,7 +24,7 @@
       <nav class="space-x-9 text-lg flex">
         <a href="{{ url_for('home') }}" class="hover:underline">HOME</a>
         <a href="{{ url_for('login_page') }}" class="hover:underline">LOGIN/SIGN UP</a>
-         <a href="#" class="hover:underline">ABOUT US</a>
+         <a href="{{ url_for('admin') }}" class="hover:underline">ADMIN</a>
 
       </nav>
     </div>
@@ -43,13 +43,19 @@
       <p class="text-gray-600 mb-4">"Empowering women with knowledge, opportunities, and a future of endless possibilities."</p>
       
       <!-- New Button Added -->
-      <button onclick="window.location.href='{{ url_for('explore') }}'" 
-        class="bg-orange-500 text-white px-5 py-3 rounded-lg shadow-md hover:bg-orange-600 transition duration-300">
-    Learn More
-</button>
-
-    
+      <script>
+        function navigateTo(url) {
+            window.location.href = url;
+        }
+      </script>
       
+      <button onclick="navigateTo('/explore')" 
+            class="bg-orange-500 text-white px-5 py-3 rounded-lg shadow-md hover:bg-orange-600 transition duration-300">
+            Explore
+      </button>
+      
+  
+
     </div>
 
     <!-- Circle Animation -->

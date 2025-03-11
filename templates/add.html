@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scheme Management</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            padding: 20px;
+        }
+        .container {
+            max-width: 900px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            text-align: center;
+        }
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+        button {
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            background-color: #007BFF;
+            color: white;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        .delete-btn {
+            background-color: red;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Scheme Management</h2>
+        <div class="top-bar">
+            <button onclick="addScheme()">Add Scheme</button>
+        </div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th>Age</th>
+                    <th>Marital Status</th>
+                    <th>State</th>
+                    <th>Residence</th>
+                    <th>Category</th>
+                    <th>Details</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody id="schemeTable">
+                <!-- Data will be inserted here dynamically -->
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", fetchSchemes);
+
+        function fetchSchemes() {
+            fetch("/get_schemes")
+                .then(response => response.json())
+                .then(data => {
+                    const table = document.getElementById("schemeTable");
+                    table.innerHTML = "";
+                    data.forEach(scheme => addRowToTable(scheme));
+                })
+                .catch(error => console.error("Error fetching schemes:", error));
+        }
+
+        function addRowToTable(scheme) {
+            const table = document.getElementById("schemeTable");
+            const row = table.insertRow();
+            row.innerHTML = `
+                <td contenteditable="true">${scheme.name}</td>
+                <td contenteditable="true">${scheme.description}</td>
+                <td contenteditable="true">${scheme.age}</td>
+                <td contenteditable="true">${scheme.marital_status}</td>
+                <td contenteditable="true">${scheme.state}</td>
+                <td contenteditable="true">${scheme.residence}</td>
+                <td contenteditable="true">${scheme.category}</td>
+                <td contenteditable="true">${scheme.details}</td>
+                <td><button class="delete-btn" onclick="deleteRow(${scheme.id}, this)">🗑</button></td>
+            `;
+        }
+
+        function addScheme() {
+            const name = prompt("Enter Scheme Name:");
+            const description = prompt("Enter Scheme Description:");
+            const age = prompt("Enter Eligible Age:");
+            const marital_status = prompt("Enter Marital Status:");
+            const state = prompt("Enter State:");
+            const residence = prompt("Enter Residence Type:");
+            const category = prompt("Enter Category:");
+            const details = prompt("Enter Details:");
+
+            if (!name || !description || !category) {
+                return alert("Name, Description, and Category are required fields!");
+            }
+
+            fetch("/add_scheme", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ name, description, age, marital_status, state, residence, category, details })
+            })
+            .then(response => response.json())
+            .then(data => addRowToTable(data))
+            .catch(error => console.error("Error adding scheme:", error));
+        }
+
+        function deleteRow(id, button) {
+            fetch(`/delete_scheme/${id}`, { method: "DELETE" })
+                .then(() => button.parentElement.parentElement.remove())
+                .catch(error => console.error("Error deleting scheme:", error));
+        }
+    </script>
+</body>
+</html>

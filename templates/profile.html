@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile | Women Empowerment</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+<style>
+    /* General Styling */
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #ffffff;  /* Black background */
+    margin: 0;
+    padding: 0;
+    color: #fff;  /* White text for contrast */
+}
+
+/* Header Styling */
+header {
+    background: #ffffff;
+    padding: 15px 30px;
+}
+
+/* Header Container */
+.header-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+/* Logo Styling */
+.logo {
+    width: 120px;
+    height: auto;
+}
+
+/* Profile Container */
+.profile-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 100px;
+}
+
+.profile-card {
+    width: 500px;
+    background: white;
+    padding: 25px;
+    border-radius: 15px;
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    transition: transform 0.3s ease-in-out;
+    color: #000;
+}
+
+.profile-card:hover {
+    transform: translateY(-5px);
+}
+
+/* Profile Header */
+.profile-header {
+    background: #1c1c1c;
+    color: white;
+    padding: 25px;
+    border-radius: 15px 15px 0 0;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+/* Profile Picture */
+.profile-picture {
+    position: relative;
+    display: inline-block;
+}
+
+.profile-picture img {
+    width: 110px;
+    height: 110px;
+    border-radius: 50%;
+    border: 4px solid white;
+    transition: transform 0.3s ease-in-out;
+}
+
+.profile-picture:hover img {
+    transform: scale(1.05);
+}
+
+/* Edit Profile Icon */
+.profile-picture label {
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+    background: white;
+    color: #1c1c1c;
+    padding: 7px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 14px;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.profile-picture input {
+    display: none;
+}
+
+/* Profile Details */
+.profile-details {
+    padding: 20px;
+    text-align: left;
+}
+
+.profile-details h3 {
+    font-family: 'Merriweather', serif;
+    color: #1c1c1c;
+    font-size: 22px;
+    border-bottom: 2px solid #C59172;
+    padding-bottom: 7px;
+    margin-bottom: 15px;
+}
+
+.profile-details p {
+    margin: 12px 0;
+    font-size: 16px;
+    color: #555;
+}
+
+/* Government Schemes Section */
+.scheme-list {
+    list-style: none;
+    padding: 0;
+    margin-top: 10px;
+}
+
+.scheme-list li {
+    background: #C59172;
+    color: white;
+    padding: 12px;
+    margin: 8px 0;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    font-weight: 500;
+    transition: background 0.3s ease-in-out;
+}
+
+.scheme-list li:hover {
+    background: #a67650;
+}
+
+/* Black Checkmark for List */
+.scheme-list li::before {
+    content: "✔";  
+    color: black;  
+    font-weight: bold;
+    margin-right: 12px;
+}
+
+/* Buttons */
+.btn {
+    display: block;
+    width: 100%;
+    padding: 12px;
+    margin: 12px 0;
+    background: #1c1c1c;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 6px;
+    font-size: 16px;
+    font-weight: bold;
+    transition: background 0.3s ease-in-out;
+}
+
+.btn:hover {
+    background: #333;
+}
+
+/* Footer Styling */
+footer {
+    background: #0a0a0a;
+    color: white;
+    text-align: center;
+    padding: 15px;
+    margin-top: 30px;
+    font-size: 14px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Footer Logo Styling */
+.footer-logo {
+    width: 50px;
+    height: auto;
+    margin-right: 8px;
+    vertical-align: middle;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .header-container {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .profile-card {
+        width: 90%;
+    }
+}
+
+.navbar {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 30px;
+            top: 0;
+            left: -90px;
+            z-index: 10;
+        }
+
+
+        .navbar ul {
+            list-style: none;
+            display: flex;
+        }
+
+        .navbar ul li {
+            margin: 0 15px;
+        }
+
+        .navbar ul li a {
+            color: #000000;
+            font-size: 15px;
+            transition: color 0.3s;
+        }
+        .navbar ul li a:hover {
+            color: #000000;
+            text-decoration: underline;
+        }
+</style>
+</head>
+<body>
+
+        <div class="header-container">
+            <img src="/static/assets/name.png" alt="Logo" class="logo">
+            <nav class="navbar">
+                <div class="logo">Zahara</div>
+                <ul>
+                    <li><a href="{{ url_for('home') }}">HOME</a></li>
+                    <li><a href="{{ url_for('login_page') }}">LOGIN/SIGN UP</a></li>
+                    <li><a href="{{ url_for('quiz') }}">W.E.TRIVIA</a></li>
+                    <li><a href="{{ url_for('logout') }}">LOGOUT</a></li>
+                </ul>
+            </nav>
+        
+        </div>
+
+    
+    <!-- Profile Section -->
+    <div class="profile-container">
+        <div class="profile-card">
+            <div class="profile-header">
+                <div class="profile-picture">
+                    <img src="\static\assets\default-avatar.png" alt="Profile Picture">
+                    <label for="upload-photo"><i class="fas fa-camera"></i></label>
+                    <input type="file" id="upload-photo" accept="image/*">
+                </div>
+                <h2>{% if user %} {{ user.name }} {% else %} User {% endif %}</h2>
+                <p class="profile-role">Registered Beneficiary</p>
+            </div>
+
+            <div class="profile-details">
+                <h3>Personal Details</h3>
+                {% if user %}
+                <p><strong>Name:</strong> {{ user.name }}</p>
+                <p><strong>Email:</strong> {{ user.email }}</p>
+            {% else %}
+                <p>User details could not be loaded.</p>
+            {% endif %}
+
+                <h3>My Schemes</h3>
+                <ul class="scheme-list">
+                    <li>Not yet applied</li>
+                </ul>
+
+                <h3>Actions</h3>
+                <button class="btn">Apply for New Scheme</button>
+                <button class="btn">View My Applications</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer Section -->
+    <footer>
+        <p>
+            <img src="\static\assets\small logo.png" alt="Logo" class="footer-logo">
+            &copy; 2025 Zahara. All rights reserved.
+        </p>
+    </footer>
+
+</body>
+</html>
