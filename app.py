@@ -32,6 +32,10 @@ def home():
 def admin():
     return render_template('admin.html')
 
+@app.route('/adminlogin')
+def adminlogin():
+    return render_template('adminlogin.html')
+
 @app.route('/add')
 def add():
     return render_template('add.html')

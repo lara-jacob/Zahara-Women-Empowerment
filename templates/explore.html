@@ -184,6 +184,65 @@ background: white; padding: 20px; box-shadow: 2px 2px 10px rgba(0,0,0,0.3); bord
         function closeModal() {
             document.getElementById("schemeModal").style.display = "none";
         }
+        document.addEventListener("DOMContentLoaded", () => {
+    setupFilters();
+});
+
+function setupFilters() {
+    const filters = document.querySelectorAll(".filter");
+    filters.forEach(filter => {
+        filter.addEventListener("change", filterSchemes);
+    });
+}
+
+function filterSchemes() {
+    const selectedFilters = {
+        age: [],
+        marital_status: [],
+        state: [],
+        area: [],
+        category: []
+    };
+
+    // Collect selected filters
+    document.querySelectorAll(".filter:checked").forEach(filter => {
+        const value = filter.value;
+
+        if (["18-25", "26-35", "36+"].includes(value)) {
+            selectedFilters.age.push(value);
+        } else if (["Single", "Married", "Widow", "All"].includes(value)) {
+            selectedFilters.marital_status.push(value);
+        } else if (["All India", "Goa", "Kerala", "Gujarat", "Tamil Nadu"].includes(value)) {
+            selectedFilters.state.push(value);
+        } else if (["Urban", "Rural", "All"].includes(value)) {
+            selectedFilters.area.push(value);
+        } else {
+            selectedFilters.category.push(value);
+        }
+    });
+
+    // Filter schemes based on selected criteria
+    document.querySelectorAll(".scheme-card").forEach(card => {
+        const schemeCategory = card.getAttribute("data-category");
+        const schemeAge = card.getAttribute("data-age") || "";
+        const schemeMarital = card.getAttribute("data-marital") || "";
+        const schemeState = card.getAttribute("data-state") || "";
+        const schemeArea = card.getAttribute("data-area") || "";
+
+        const ageMatch = selectedFilters.age.length === 0 || selectedFilters.age.includes(schemeAge);
+        const maritalMatch = selectedFilters.marital_status.length === 0 || selectedFilters.marital_status.includes(schemeMarital);
+        const stateMatch = selectedFilters.state.length === 0 || selectedFilters.state.includes(schemeState);
+        const areaMatch = selectedFilters.area.length === 0 || selectedFilters.area.includes(schemeArea);
+        const categoryMatch = selectedFilters.category.length === 0 || selectedFilters.category.includes(schemeCategory);
+
+        // Show scheme only if all selected filters match
+        if (ageMatch && maritalMatch && stateMatch && areaMatch && categoryMatch) {
+            card.style.display = "block";
+        } else {
+            card.style.display = "none";
+        }
+    });
+}
         </script>
         
 

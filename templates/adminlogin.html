@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Password Input</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: url("{{ url_for('static', filename='/assets/bg.png') }}") no-repeat center center/cover;
+            font-family: Arial, sans-serif;
+            flex-direction: column;
+            
+        }
+
+        .container {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.8);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .password-box {
+            display: flex;
+            align-items: center;
+            border: 1px solid #ccc;
+            border-radius: 10Spx;
+            padding: 5px;
+            background: #fff;
+            margin-bottom: 10px;
+        }
+
+        .password-box input {
+            border: none;
+            outline: none;
+            padding: 10px;
+            font-size: 16px;
+            width: 200px;
+        }
+
+        .password-box button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 18px;
+            padding: 5px;
+        }
+
+        .submit-btn {
+            padding: 10px 15px;
+            border: none;
+            background: #28a745;
+            color: white;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .submit-btn:hover {
+            background: #218838;
+        }
+
+        .bg-input {
+            margin-top: 15px;
+            text-align: center;
+        }
+
+        .bg-input input {
+            padding: 8px;
+            width: 250px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-right: 5px;
+        }
+
+        .bg-input button {
+            padding: 8px 12px;
+            border: none;
+            background: #007BFF;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .bg-input button:hover {
+            background: #0056b3;
+        }
+        .eye-icon{
+            cursor:pointer;
+            margin-left:50px;
+        }
+        .navbar {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 30px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 10;
+        }
+        .navbar ul {
+            list-style: none;
+            display: flex;
+        }
+
+        .navbar ul li {
+            margin: 0 15px;
+            position: center;
+        }
+
+        .navbar ul li a {
+            color: #000000;
+            text-decoration: none;
+            font-size: 15px;
+            transition: color 0.3s;
+        }
+        .navbar ul li a:hover {
+    color: #000000;
+    text-decoration: underline;
+}
+        .navbar.logo {
+            font-size: 20px;
+            font-weight: bold;
+            color: #000000;
+            margin-right: auto;
+        }
+
+
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">
+    
+        </div>
+        <ul>
+            <li><a href="{{ url_for('home') }}">HOME</a></li>
+            <li><a href="{{ url_for('login_page') }}">LOGIN/SIGN UP</a></li>
+            <li><a href="{{ url_for('explore')}}">EXPLORE</a></li>
+           
+        </ul>
+    </nav>
+    <div class="container">
+        <h2>ENTER ADMIN PASSWORD</h2>
+        <div class="password-box">
+            <input type="password" id="password" placeholder="Enter password">
+            <i class="eye-icon"onclick="togglePassword()">👁</i>
+            
+        </div>
+        <button class="submit-btn" onclick="submitPassword()">Submit</button>
+    </div>
+
+    <script>
+        function togglePassword() {
+            let passwordField = document.getElementById("password");
+            passwordField.type = (passwordField.type === "password") ? "text" : "password";
+        }
+
+        function submitPassword() {
+            let password = document.getElementById("password").value;
+            if (password === "NLRV29184269") {
+                window.location.href = "{{ url_for('admin') }}";  // Redirect to the next page
+            } else {
+                alert("Incorrect password! Try again.");
+            }
+        }
+    </script>
+</body>
+</html>
