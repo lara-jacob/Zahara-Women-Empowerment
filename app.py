@@ -143,7 +143,7 @@ def get_sche():
     try:
         db = get_db_connection()  # Establish a database connection
         cursor = db.cursor(dictionary=True)
-        cursor.execute("SELECT id, name, description, category FROM schemes")
+        cursor.execute("SELECT id, name, description, category,age FROM schemes")
         schemes = cursor.fetchall()
         cursor.close()
         db.close()  # Close the connection
@@ -219,6 +219,7 @@ def delete_scheme(id):
     conn.commit()
     conn.close()
     return jsonify({"message": "Scheme deleted successfully"}), 200
+
 
 # Update scheme status
 @app.route('/update_status', methods=['PUT'])

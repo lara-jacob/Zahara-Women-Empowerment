@@ -70,6 +70,71 @@
         .scheme-card button:hover {
             background: #e65c00;
         }
+        /* Logo Styling */
+        .header {
+            display: flex;
+            align-items: center;
+            padding: 10px 20px;
+            background: transparent;
+        }
+
+        .logo {
+            width: 120px; /* Adjust as needed */
+            height: auto;
+        }
+
+        /* Top section with heading & navigation */
+        .top-section {
+            text-align: center;
+            margin-top: -30px;
+            margin-left: 100px;
+        }
+
+        .top-section h1 {
+            color: #d65a00;
+            font-size: 28px;
+            margin-bottom: 40px;
+        }
+
+        /* Navigation styling */
+       
+       
+        .container {
+            display: flex;
+            padding: 20px;
+        }
+        .navbar {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 10px 0;
+            top: 0px;
+            left: -50px;
+            margin-left: 250px;
+            z-index: 1000;
+        }
+
+
+        .navbar ul {
+            list-style: none;
+            display: flex;
+        }
+
+        .navbar ul li {
+            margin: 0 15px;
+        }
+
+        .navbar ul li a {
+            color: #000000;
+            font-size: 15px;
+            transition: color 0.3s;
+        }
+        .navbar ul li a:hover {
+            color: #000000;
+            text-decoration: underline;
+        }
+        
     </style>
 </head>
 <div id="schemeModal" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
@@ -80,6 +145,26 @@ background: white; padding: 20px; box-shadow: 2px 2px 10px rgba(0,0,0,0.3); bord
 </div>
 
 <body>
+
+    <!-- Logo Section -->
+    <header class="header">
+        <img src="\static\assets\name.png" alt="Zahara Logo" class="logo">
+        <div class="header-container">
+            <nav class="navbar">
+               
+                <ul>
+                    <li><a href="{{ url_for('home') }}">HOME</a></li>
+                    <li><a href="{{ url_for('login_page') }}">LOGIN/SIGN UP</a></li>
+                    
+                </ul>
+            </nav>
+    </header>
+    
+    </div>
+     <!-- Heading and Navigation -->
+     <div class="top-section">
+        <h1>Explore Women’s Schemes</h1> 
+    </div>
     <div class="container">
         <div class="filters">
             <h2>Filters</h2>
@@ -120,24 +205,7 @@ background: white; padding: 20px; box-shadow: 2px 2px 10px rgba(0,0,0,0.3); bord
         </div>
         
         <div class="content">
-            <h1>Explore Women’s Schemes</h1>
             <div class="schemes" id="schemes">
-                <div class="scheme-card" data-category="Education">
-                    <h3>Savitribai Jyotirao Phule Fellowship For Single Girl Child</h3>
-                    <p>Financial assistance for single girl children pursuing a PhD in Social Sciences.</p>
-                    <button>Learn More</button>
-                </div>
-                <div class="scheme-card" data-category="Women Welfare">
-                    <h3>Nari Niketans</h3>
-                    <p>Shelter and rehabilitation for destitute and abandoned women.</p>
-                    <button>Learn More</button>
-                </div>
-                <div class="scheme-card" data-category="Financial Support">
-                    <h3>Laadli Laxmi Scheme</h3>
-                    <p>Financial assistance for girl children to support education and marriage.</p>
-                    <button>Learn More</button>
-                </div>
-            </div>
         </div>
     </div>
     <script>
