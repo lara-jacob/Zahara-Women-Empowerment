@@ -171,9 +171,12 @@
         startBtn.onclick = () => {
             startBtn.style.display = "none";
             bgMusic.play(); // Play music on user interaction
+            shuffleQuestions();
             showQuestion();
         };
-
+        function shuffleQuestions() {
+            questions.sort(() => Math.random() - 0.5);
+        }
         function showQuestion() {
             clearTimeout(timer);
             nextButton.style.display = "none";
