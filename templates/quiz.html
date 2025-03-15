@@ -27,8 +27,8 @@
             backdrop-filter: blur(10px);
             box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
         }
-        h1 { font-size: 1.8rem; font-weight: 600; margin-bottom: 10px; }
-        .tagline { font-size: 1rem; color: #f8c400; margin-bottom: 20px; }
+        h1 { font-size: 1.8rem; font-weight: 600; margin-bottom: 10px;color: #fcb91c; }
+        .tagline { font-size: 1rem; color: #f7f6f4; margin-bottom: 20px; }
         .question { font-size: 1.2rem; margin-bottom: 20px; }
         .options { display: flex; flex-direction: column; }
         .option {
@@ -40,7 +40,14 @@
             transition: 0.3s;
             font-size: 1rem;
         }
-        .option:hover { background: #f8c200; color: #333; }
+        
+         .option:hover {
+    background: linear-gradient(to right, #ff8c00, #ffd700);
+    color: white;
+    transform: scale(1.05);
+    transition: all 0.3s ease-in-out;
+}
+
         .timer { font-size: 1rem; color: #ff5f5f; margin-top: 10px; }
         .next-btn {
             margin-top: 20px;
@@ -89,6 +96,9 @@
 
         <button class="next-btn">Next</button>
         <p class="result"></p>
+
+        <p id="final-message" style="display: none; font-size: 1.2rem; color: #ffda66; margin-top: 10px;"></p>
+        
     </div>
 
     <!-- Background Music -->
@@ -100,6 +110,8 @@
     <audio id="success-sound">
         <source src="\static\assets\success.mp3" type="audio/mpeg">
     </audio>
+    
+  
 
     <script>
         const questions = [
@@ -178,6 +190,7 @@
             questions.sort(() => Math.random() - 0.5);
         }
         function showQuestion() {
+            
             clearTimeout(timer);
             nextButton.style.display = "none";
             questionElement.style.display = "block";
@@ -238,6 +251,17 @@
             resultElement.innerText = `Quiz Complete! Your Score: ${score} / ${questions.length}`;
             resultElement.style.display = "block";
             successSound.play();
+            let message;
+    if (score >= 8) {
+        message = "🔥 Amazing! You are a true champion of Women Empowerment!";
+    } else if (score >= 5) {
+        message = "😊 Good Job! Keep learning and inspiring others!";
+    } else {
+        message = "💡 Keep practicing and you'll get better!";
+    }
+    const finalMessage = document.getElementById("final-message");
+    finalMessage.innerText = message;
+    finalMessage.style.display = "block"; // Ensure it is visible
         }
     </script>
 </body>
