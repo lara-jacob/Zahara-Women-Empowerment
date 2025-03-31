@@ -11,13 +11,23 @@
             padding: 20px;
         }
         .container {
-            max-width: 900px;
+            max-width: 2000px;
             margin: auto;
             background: white;
             padding: 20px;
-            border-radius: 10px;
+            border-radius: 20px;
             box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
         }
+        .link-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            max-width: 150px; /* Adjust the width */
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+        }
+
         h2 {
             text-align: center;
         }
@@ -55,6 +65,11 @@
             cursor: pointer;
             border-radius: 5px;
         }
+        .link-container, .action-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
     </style>
 </head>
 <body>
@@ -75,6 +90,7 @@
                     <th>Residence</th>
                     <th>Category</th>
                     <th>Details</th>
+                    <th>Link</th>
                     <th>Action</th>
                 </tr>
             </thead>
@@ -88,7 +104,7 @@
         document.addEventListener("DOMContentLoaded", fetchSchemes);
 
         function fetchSchemes() {
-            fetch("/get_schemes")
+            fetch("/get_sche")
                 .then(response => response.json())
                 .then(data => {
                     const table = document.getElementById("schemeTable");
@@ -110,6 +126,9 @@
                 <td contenteditable="true">${scheme.residence}</td>
                 <td contenteditable="true">${scheme.category}</td>
                 <td contenteditable="true">${scheme.details}</td>
+                <td class="link-container">
+                    <a href="${scheme.link}" target="_blank">🔗 Link</a>
+                </td>
                 <td><button class="delete-btn" onclick="deleteRow(${scheme.id}, this)">🗑</button></td>
             `;
         }
@@ -123,6 +142,7 @@
             const residence = prompt("Enter Residence Type:");
             const category = prompt("Enter Category:");
             const details = prompt("Enter Details:");
+            const link = prompt("Enter Link:");
 
             if (!name || !description || !category) {
                 return alert("Name, Description, and Category are required fields!");
@@ -131,7 +151,7 @@
             fetch("/add_scheme", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ name, description, age, marital_status, state, residence, category, details })
+                body: JSON.stringify({ name, description, age, marital_status, state, residence, category, details,link })
             })
             .then(response => response.json())
             .then(data => addRowToTable(data))

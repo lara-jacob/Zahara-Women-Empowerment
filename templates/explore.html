@@ -164,7 +164,7 @@ background: white; padding: 20px; box-shadow: 2px 2px 10px rgba(0,0,0,0.3); bord
      <!-- Heading and Navigation -->
      <div class="top-section">
         <h1>Explore Women’s Schemes</h1> 
-    </div>
+    </div>
     <div class="container">
         <div class="filters">
             <h2>Filters</h2>
@@ -209,51 +209,9 @@ background: white; padding: 20px; box-shadow: 2px 2px 10px rgba(0,0,0,0.3); bord
         </div>
     </div>
     <script>
-        document.addEventListener("DOMContentLoaded", fetchSchemes);
-        
-        function fetchSchemes() {
-            fetch("/get_sche")
-                .then(response => response.json())
-                .then(data => {
-                    const schemesContainer = document.getElementById("schemes");
-                    schemesContainer.innerHTML = "";
-                    data.forEach(scheme => addSchemeCard(scheme));
-                })
-                .catch(error => console.error("Error fetching schemes:", error));
-        }
-        
-        function addSchemeCard(scheme) {
-            const schemesContainer = document.getElementById("schemes");
-            const card = document.createElement("div");
-            card.classList.add("scheme-card");
-            card.setAttribute("data-category", scheme.category);
-            
-            card.innerHTML = `
-                <h3>${scheme.name}</h3>
-                <p>${scheme.description.substring(0, 80)}...</p> <!-- Short description -->
-                <button onclick="showDetails(${scheme.id})">Learn More</button>
-            `;
-            
-            schemesContainer.appendChild(card);
-        }
-        
-        function showDetails(schemeId) {
-            fetch(`/get_scheme_details?id=${schemeId}`)
-                .then(response => response.json())
-                .then(data => {
-                    document.getElementById("schemeTitle").innerText = data.name;
-                    document.getElementById("schemeDesc").innerText = data.details;
-                    document.getElementById("schemeModal").style.display = "block";
-                })
-                .catch(error => console.error("Error fetching details:", error));
-        }
-        
-        // Close modal function
-        function closeModal() {
-            document.getElementById("schemeModal").style.display = "none";
-        }
         document.addEventListener("DOMContentLoaded", () => {
     setupFilters();
+    fetchSchemes(); // Fetch schemes initially
 });
 
 function setupFilters() {
@@ -261,6 +219,17 @@ function setupFilters() {
     filters.forEach(filter => {
         filter.addEventListener("change", filterSchemes);
     });
+}
+
+function fetchSchemes() {
+    fetch("/get_sche")
+        .then(response => response.json())
+        .then(data => {
+            const schemesContainer = document.getElementById("schemes");
+            schemesContainer.innerHTML = "";
+            data.forEach(scheme => addSchemeCard(scheme));
+        })
+        .catch(error => console.error("Error fetching schemes:", error));
 }
 
 function filterSchemes() {
@@ -272,7 +241,6 @@ function filterSchemes() {
         category: []
     };
 
-    // Collect selected filters
     document.querySelectorAll(".filter:checked").forEach(filter => {
         const value = filter.value;
 
@@ -289,29 +257,73 @@ function filterSchemes() {
         }
     });
 
-    // Filter schemes based on selected criteria
-    document.querySelectorAll(".scheme-card").forEach(card => {
-        const schemeCategory = card.getAttribute("data-category");
-        const schemeAge = card.getAttribute("data-age") || "";
-        const schemeMarital = card.getAttribute("data-marital") || "";
-        const schemeState = card.getAttribute("data-state") || "";
-        const schemeArea = card.getAttribute("data-area") || "";
-
-        const ageMatch = selectedFilters.age.length === 0 || selectedFilters.age.includes(schemeAge);
-        const maritalMatch = selectedFilters.marital_status.length === 0 || selectedFilters.marital_status.includes(schemeMarital);
-        const stateMatch = selectedFilters.state.length === 0 || selectedFilters.state.includes(schemeState);
-        const areaMatch = selectedFilters.area.length === 0 || selectedFilters.area.includes(schemeArea);
-        const categoryMatch = selectedFilters.category.length === 0 || selectedFilters.category.includes(schemeCategory);
-
-        // Show scheme only if all selected filters match
-        if (ageMatch && maritalMatch && stateMatch && areaMatch && categoryMatch) {
-            card.style.display = "block";
-        } else {
-            card.style.display = "none";
-        }
-    });
+    fetch("/filter_schemes", {  // Changed API endpoint
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(selectedFilters)
+    })
+    .then(response => response.json())
+    .then(data => {
+        const schemesContainer = document.getElementById("schemes");
+        schemesContainer.innerHTML = "";
+        data.forEach(scheme => addSchemeCard(scheme));
+    })
+    .catch(error => console.error("Error fetching filtered schemes:", error));
 }
-        </script>
+
+function addSchemeCard(scheme) {
+    const schemesContainer = document.getElementById("schemes");
+    const card = document.createElement("div");
+    card.classList.add("scheme-card");
+    card.setAttribute("data-category", scheme.category);
+
+    card.innerHTML = `
+        <h3>${scheme.name}</h3>
+        <p>${scheme.description.substring(0, 80)}</p>
+        <button onclick="showDetails(${scheme.id})">Learn More</button>
+    `;
+
+    schemesContainer.appendChild(card);
+}
+
+function showDetails(schemeId) {
+    fetch(`/get_scheme_details?id=${schemeId}`)
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById("schemeTitle").innerText = data.name;
+            document.getElementById("schemeDesc").innerText = data.details;
+
+            // Add a clickable link
+            let schemeLink = document.getElementById("schemeLink");
+            if (!schemeLink) {
+                schemeLink = document.createElement("a");
+                schemeLink.id = "schemeLink";
+                schemeLink.style.display = "block";
+                schemeLink.style.marginTop = "10px";
+                schemeLink.style.color = "blue";
+                schemeLink.style.textDecoration = "underline";
+                document.getElementById("schemeModal").appendChild(schemeLink);
+            }
+            
+            schemeLink.href = data.link;
+            schemeLink.target = "_blank";
+            schemeLink.innerText = "Visit Scheme Website";
+
+            document.getElementById("schemeModal").style.display = "block";
+        })
+        .catch(error => console.error("Error fetching details:", error));
+}
+
+
+// Close modal function
+function closeModal() {
+    document.getElementById("schemeModal").style.display = "none";
+}
+
+
+</script>
         
 
 </body>

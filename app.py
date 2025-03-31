@@ -51,7 +51,7 @@ def send_email_notification(scheme_name, scheme_description):
 
         msg = MIMEMultipart()
         msg["From"] = EMAIL_SENDER
-        msg["To"] = ", ".join(recipient_emails)  # ✅ Fix: Use a single "To" header
+        msg["To"] = ", ".join(recipient_emails)  
         msg["Subject"] = subject
         msg.attach(MIMEText(message_body, "plain"))
 
@@ -199,42 +199,59 @@ def login():
 def logout():
     session.pop("user", None)
     return redirect(url_for("home"))
-
-@app.route('/get_sche', methods=['GET'])
-def get_sche():
-    try:
-        db = get_db_connection()  # Establish a database connection
-        cursor = db.cursor(dictionary=True)
-        cursor.execute("SELECT id, name, description, category,age FROM schemes")
-        schemes = cursor.fetchall()
-        cursor.close()
-        db.close()  # Close the connection
-        return jsonify(schemes)
-    except Exception as e:
-        return jsonify({"error": str(e)}), 500
-
-
-# API to fetch detailed information about a specific scheme
-@app.route('/get_scheme_details', methods=['GET'])
-def get_scheme_details():
-    db = get_db_connection() 
-    scheme_id = request.args.get('id')
-    cursor = db.cursor(dictionary=True)
-    cursor.execute("SELECT name, details FROM schemes WHERE id = %s", (scheme_id,))
-    scheme = cursor.fetchone()
-    cursor.close()
-    return jsonify(scheme)
-
-
-# Fetch all schemes
-@app.route('/get_schemes', methods=['GET'])
+@app.route("/get_sche", methods=["GET"])
 def get_schemes():
     conn = get_db_connection()
     cursor = conn.cursor(dictionary=True)
-    cursor.execute("SELECT * FROM schemes")
+    cursor.execute("SELECT * FROM schemes")  # Adjust table name as needed
     schemes = cursor.fetchall()
     conn.close()
     return jsonify(schemes)
+
+@app.route("/filter_schemes", methods=["POST"])
+def filter_schemes():
+    filters = request.json
+    query = "SELECT * FROM schemes WHERE 1=1"
+    params = []
+
+    if filters["age"]:
+        query += " AND (age IN ({}) OR age = 'All' OR age IS NULL)".format(",".join(["%s"] * len(filters["age"])))
+        params.extend(filters["age"])
+
+    if filters["marital_status"]:
+        query += " AND marital_status IN ({})".format(",".join(["%s"] * len(filters["marital_status"])))
+        params.extend(filters["marital_status"])
+
+    if filters["state"]:
+        query += " AND state IN ({})".format(",".join(["%s"] * len(filters["state"])))
+        params.extend(filters["state"])
+
+    if filters["area"]:
+        query += " AND area IN ({})".format(",".join(["%s"] * len(filters["area"])))
+        params.extend(filters["area"])
+
+    if filters["category"]:
+        query += " AND category IN ({})".format(",".join(["%s"] * len(filters["category"])))
+        params.extend(filters["category"])
+
+    conn = get_db_connection()
+    cursor = conn.cursor(dictionary=True)
+    cursor.execute(query, params)
+    filtered_schemes = cursor.fetchall()
+    conn.close()
+
+    return jsonify(filtered_schemes)
+
+@app.route("/get_scheme_details", methods=["GET"])
+def get_scheme_details():
+    scheme_id = request.args.get("id")
+    conn = get_db_connection()
+    cursor = conn.cursor(dictionary=True)
+    cursor.execute("SELECT * FROM schemes WHERE id = %s", (scheme_id,))
+    scheme = cursor.fetchone()
+    conn.close()
+    return jsonify(scheme)
+
 
 # Add a new scheme
 @app.route('/add_scheme', methods=['POST'])
@@ -316,6 +333,8 @@ def delete_user(user_id):
     conn.commit()
     conn.close()
     return jsonify({"success": True})
+
+
 
 if __name__ == '__main__':
     app.run(debug=True)
