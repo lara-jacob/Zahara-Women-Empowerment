@@ -3,6 +3,68 @@ from flask_cors import CORS
 import mysql.connector
 from werkzeug.security import generate_password_hash, check_password_hash
 import sqlite3
+import smtplib
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
+
+# Email Configuration
+import smtplib
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
+
+# Email Configuration
+SMTP_SERVER = "smtp.gmail.com"
+SMTP_PORT = 587
+EMAIL_SENDER = "varshapanicker5@gmail.com"  # Use your email
+EMAIL_PASSWORD = "wost xbou lqeo mdwv"  # Use a Gmail App Password
+
+def send_email_notification(scheme_name, scheme_description):
+    """Send email notifications to all registered users."""
+    try:
+        conn = get_db_connection()
+        cursor = conn.cursor(dictionary=True)
+        cursor.execute("SELECT email FROM users")
+        users = cursor.fetchall()
+        cursor.close()
+        conn.close()
+
+        recipient_emails = [user["email"] for user in users]
+
+        if not recipient_emails:
+            print("No recipients found.")
+            return
+
+        subject = "New Scheme Added - Zahara"
+        message_body = f"""
+        Hello,
+
+        A new scheme has been added on Zahara:
+
+        *Scheme Name:* {scheme_name}
+        *Description:* {scheme_description}
+
+        Visit the platform to explore more.
+
+        Regards,
+        Zahara Team
+        """
+
+        msg = MIMEMultipart()
+        msg["From"] = EMAIL_SENDER
+        msg["To"] = ", ".join(recipient_emails)  # ✅ Fix: Use a single "To" header
+        msg["Subject"] = subject
+        msg.attach(MIMEText(message_body, "plain"))
+
+        with smtplib.SMTP(SMTP_SERVER, SMTP_PORT) as server:
+            server.starttls()
+            server.login(EMAIL_SENDER, EMAIL_PASSWORD)
+            server.sendmail(EMAIL_SENDER, recipient_emails, msg.as_string())
+
+        print("Emails sent successfully!")
+
+    except Exception as e:
+        print("Error sending email:", str(e))
+
 
 app = Flask(__name__)
 app.secret_key = "your_secret_key"  # Secret key for session management
@@ -202,6 +264,8 @@ def add_scheme():
     conn.commit()
     scheme_id = cursor.lastrowid
     conn.close()
+
+    send_email_notification(data["name"], data["description"])
 
     return jsonify({
         "id": scheme_id,
