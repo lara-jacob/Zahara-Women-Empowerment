@@ -239,6 +239,138 @@ footer {
             color: #000000;
             text-decoration: underline;
         }
+        
+
+         /* Scheme Header - Puts "+" to the Right */
+         .scheme-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between; /* Pushes "+" to the right */
+            position: relative;
+            width: 100%;
+
+            padding-bottom: 7px;
+        }
+
+        .plus-sign {
+            font-size: 24px;
+            font-weight: bold;
+            color: #C59172;
+            cursor: pointer;
+            transition: transform 0.2s ease-in-out;
+            margin-left: 10px;
+        }
+
+        .plus-sign:hover {
+            transform: scale(1.2);
+        }
+
+        /* Floating Scheme Box - Centered */
+        .scheme-box {
+            display: none;
+            position: fixed;
+            background: white;
+            color: black;
+            border: 1px solid #ccc;
+            padding: 15px;
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+            border-radius: 6px;
+            width: 300px;
+            max-height: 300px;
+            overflow-y: auto;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 1000;
+        }
+
+        .scheme-box ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .scheme-box ul li {
+            padding: 8px;
+            display: flex;
+            justify-content: space-between;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .scheme-box ul li:last-child {
+            border-bottom: none;
+        }
+
+        /* Add Button */
+        .add-btn {
+            background: green;
+            color: white;
+            border: none;
+            padding: 5px;
+            font-size: 12px;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+
+        .add-btn:hover {
+            background: darkgreen;
+        }
+
+        /* Overlay Background */
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+        }
+
+        .scheme-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.scheme-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #C59172;
+    color: white;
+    padding: 10px;
+    margin: 5px 0;
+    border-radius: 6px;
+    font-weight: 500;
+    transition: background 0.3s ease-in-out;
+}
+
+.scheme-item:hover {
+    background: #a67650;
+}
+
+.remove-btn {
+    background: red;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    font-size: 12px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background 0.3s ease-in-out;
+    margin-left: auto; /* Pushes button to the right */
+}
+
+.remove-btn:hover {
+    background: darkred;
+}
+
+
+
+
+
 </style>
 </head>
 <body>
@@ -280,10 +412,38 @@ footer {
                 <p>User details could not be loaded.</p>
             {% endif %}
 
+            <div class="scheme-header">
                 <h3>My Schemes</h3>
-                <ul class="scheme-list">
-                    <li>Not yet applied</li>
-                </ul>
+                <span class="plus-sign" onclick="toggleSchemeBox()">+</span>
+    
+                <!-- Small floating scheme box (positioned right of plus sign) -->
+                <div class="scheme-box" id="schemeBox">
+                    <ul id="scheme-list">
+                        <li>Loading...</li>
+                    </ul>
+                </div>
+            </div>
+            
+            
+            <ul class="scheme-list" id="my-schemes">
+                {% if user_schemes %}
+                    {% for scheme in user_schemes %}
+                        <li class="scheme-item">
+                            <span>{{ scheme.name }}</span>
+                            <button class="remove-btn" onclick="removeScheme({{ scheme.id }})">Remove</button>
+                        </li>
+                    {% endfor %}
+                {% else %}
+                    <li>No schemes added yet.</li>
+                {% endif %}
+            </ul>
+            
+            
+            
+            
+            
+
+            
 
                 <h3>Actions</h3>
                 <button class="btn">Apply for New Scheme</button>
@@ -299,6 +459,126 @@ footer {
             &copy; 2025 Zahara. All rights reserved.
         </p>
     </footer>
+    <script>
+        let selectedSchemes = new Set();  // Track added schemes
 
+function toggleSchemeBox() {
+    let box = document.getElementById('schemeBox');
+    if (box.style.display === 'none' || box.style.display === '') {
+        box.style.display = 'block';
+        fetchSchemes();
+    } else {
+        box.style.display = 'none';
+    }
+}
+
+function fetchSchemes() {
+    fetch('/g_scheme')  // Fetch schemes from Flask route
+        .then(response => response.json())
+        .then(data => {
+            let schemeList = document.getElementById('schemeBox').querySelector('ul');
+            schemeList.innerHTML = ''; // Clear previous list
+
+            if (data.length > 0) {
+                data.forEach(scheme => {
+                    let li = document.createElement('li');
+                    li.textContent = scheme.name;
+
+                    let addButton = document.createElement('button');
+                    addButton.textContent = 'Add';
+                    addButton.classList.add('add-btn');
+                    addButton.onclick = function () {
+                        addScheme(scheme.id, scheme.name);
+                    };
+
+                    li.appendChild(addButton);
+                    schemeList.appendChild(li);
+                });
+            } else {
+                schemeList.innerHTML = '<li>No schemes available</li>';
+            }
+        })
+        .catch(error => console.error('Error fetching schemes:', error));
+}
+
+function addScheme(id, name) {
+    fetch('/add_user_scheme', {  // New API endpoint
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ scheme_id: id })  // Send scheme ID to backend
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            updateMySchemes(name);
+        } else {
+            alert('Failed to add scheme');
+        }
+    })
+    .catch(error => console.error('Error:', error));
+}
+
+function updateMySchemes(name, id) {
+    let mySchemeList = document.getElementById('my-schemes');
+    if (mySchemeList.children[0].textContent === "No schemes added yet.") {
+        mySchemeList.innerHTML = ''; // Clear placeholder text
+    }
+
+    let li = document.createElement('li');
+    li.classList.add('scheme-item');
+    
+    let span = document.createElement('span');
+    span.textContent = name;
+
+    let removeBtn = document.createElement('button');
+    removeBtn.textContent = "Remove";
+    removeBtn.classList.add('remove-btn');
+    removeBtn.onclick = function() {
+        removeScheme(id);
+    };
+
+    li.appendChild(span);
+    li.appendChild(removeBtn);
+    mySchemeList.appendChild(li);
+}
+
+
+
+
+// Hide the box when clicking outside
+document.addEventListener('click', function(event) {
+    let box = document.getElementById('schemeBox');
+    let plusSign = document.querySelector('.plus-sign');
+    if (!box.contains(event.target) && event.target !== plusSign) {
+        box.style.display = 'none';
+    }
+});
+
+function removeScheme(schemeId) {
+    fetch('/remove_user_scheme', {
+        method: 'POST',  // Using POST instead of DELETE
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ scheme_id: schemeId })  // Send scheme_id in request body
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            alert("Scheme removed successfully!");
+            document.getElementById(`scheme-${schemeId}`).remove(); // Remove from UI without reload
+        } else {
+            alert(data.message || "Error removing scheme.");
+        }
+    })
+    .catch(error => console.error("Error:", error));
+}
+
+
+    
+    </script>
+    
 </body>
 </html>

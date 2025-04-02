@@ -182,6 +182,35 @@
             background: #b4480a;
             color: #fff;
         }
+        .modal {
+        display: none;
+        position: fixed;
+        z-index: 1000;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        display: none;
+        justify-content: center;
+        align-items: center;
+    }
+    .modal-content {
+        background: white;
+        padding: 20px;
+        border-radius: 10px;
+        text-align: center;
+        width: 300px;
+    }
+    .close {
+        position: absolute;
+        right: 10px;
+        top: 10px;
+        font-size: 20px;
+        cursor: pointer;
+    }
+
+
     </style>
 </head>
 <body>
@@ -222,6 +251,9 @@
                     <input type="password" placeholder="Password" required>
                 </div>
                 <div class="form-group">
+                    <a href="#" id="forgot-password-link" style="color: #b4480a; text-decoration: none; font-size: 12px;">Forgot Password?</a>
+                </div>
+                <div class="form-group">
                     <button id="login-btn">Submit</button>
                 </div>
             </div>
@@ -233,6 +265,16 @@
                 <p id="overlay-text">Enter your details and start your journey with us.</p>
                 <button id="overlay-button">Login</button>
             </div>
+        </div>
+    </div>
+
+    <div id="forgot-password-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Reset Password</h2>
+            <input type="email" id="reset-email" placeholder="Enter your email" required>
+            <input type="password" id="reset-password" placeholder="Enter new password" required>
+            <button id="reset-btn">Reset Password</button>
         </div>
     </div>
 
@@ -293,6 +335,7 @@
     }
 });
 
+
 document.getElementById("login-btn").addEventListener("click", async (e) => {
     e.preventDefault();
     const email = document.querySelector(".login input[placeholder='Email']").value;
@@ -311,6 +354,51 @@ document.getElementById("login-btn").addEventListener("click", async (e) => {
         window.location.href = "{{ url_for('profile') }}";
     }
 });
+const modal = document.getElementById("forgot-password-modal");
+const closeModal = document.querySelector(".close");
+// Show the forgot password modal when clicked
+
+// Show modal when "Forgot Password?" is clicked
+document.getElementById("forgot-password-link").addEventListener("click", (e) => {
+    e.preventDefault();
+    modal.style.display = "flex";  // Show modal
+});
+
+// Hide modal when clicking 'X' button
+closeModal.addEventListener("click", () => {
+    modal.style.display = "none";  // Hide modal
+});
+
+// Hide modal when clicking outside of it
+window.addEventListener("click", (e) => {
+    if (e.target === modal) {
+        modal.style.display = "none";  // Hide modal
+    }
+});
+// Handle password reset request
+document.getElementById("reset-btn").addEventListener("click", async () => {
+    const email = document.getElementById("reset-email").value;
+    const newPassword = document.getElementById("reset-password").value;
+
+    if (!email || !newPassword) {
+        alert("Please fill in both fields.");
+        return;
+    }
+
+    const response = await fetch("http://127.0.0.1:5000/reset-password", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, new_password: newPassword })
+    });
+
+    const result = await response.json();
+    alert(result.message || result.error);
+
+    if (response.status === 200) {
+        document.getElementById("forgot-password-modal").style.display = "none";
+    }
+});
+
 
 
     </script>
