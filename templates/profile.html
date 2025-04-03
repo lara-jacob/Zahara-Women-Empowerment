@@ -445,8 +445,7 @@ footer {
             
 
                 <h3>Actions</h3>
-                <button class="btn">Apply for New Scheme</button>
-                <button class="btn">View My Applications</button>
+                <button class="btn" id="applyBtn">Apply for New Scheme</button>
             </div>
         </div>
     </div>
@@ -454,7 +453,7 @@ footer {
     <!-- Footer Section -->
     <footer>
         <p>
-            <img src="\static\assets\small logo.png" alt="Logo" class="footer-logo">
+            <img src="\static\assets\logo.png" alt="Logo" class="footer-logo">
             &copy; 2025 Zahara. All rights reserved.
         </p>
     </footer>
@@ -574,8 +573,11 @@ function removeScheme(schemeId) {
     })
     .catch(error => console.error("Error:", error));
 }
-
-
+document.addEventListener("DOMContentLoaded", function () {
+    document.getElementById("applyBtn").addEventListener("click", function () {
+        window.location.href = "/explore";  // Redirects to the Flask route
+    });
+});
     
     </script>
     
