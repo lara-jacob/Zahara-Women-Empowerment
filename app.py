@@ -497,8 +497,18 @@ def add_user_scheme():
     except Exception as e:
         return jsonify({'success': False, 'error': str(e)}), 500
 
+@app.route('/remove_user_scheme', methods=['POST'])
+def remove_user_scheme():
+    data = request.json
+    user_id = session['user_id'] 
+    scheme_id = data.get('scheme_id')
+    conn = get_db_connection()
+    cursor = conn.cursor()
 
 
+    cursor.execute("DELETE FROM UserScheme WHERE user_id = %s AND scheme_id = %s", (user_id, scheme_id))
+    conn.commit()
+    return jsonify({"message": "Scheme removed successfully"})
 
 
 
