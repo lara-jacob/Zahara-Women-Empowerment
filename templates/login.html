@@ -272,9 +272,9 @@
         <div class="modal-content">
             <span class="close">&times;</span>
             <h2>Reset Password</h2>
-            <input type="email" id="reset-email" placeholder="Enter your email" required>
-            <input type="password" id="reset-password" placeholder="Enter new password" required>
-            <button id="reset-btn">Reset Password</button>
+            <input type="email" id="email" placeholder="Enter your email">
+            <button id="resetBtn">Reset Password</button>
+
         </div>
     </div>
 
@@ -310,7 +310,7 @@
             overlayButton.textContent = "Login";
         });   
 
-        document.getElementById("sign-up-btn").addEventListener("click", async (e) => {
+document.getElementById("sign-up-btn").addEventListener("click", async (e) => {
     e.preventDefault();
     const name = document.querySelector(".sign-up input[placeholder='Name']").value;
     const email = document.querySelector(".sign-up input[placeholder='Email']").value;
@@ -341,19 +341,30 @@ document.getElementById("login-btn").addEventListener("click", async (e) => {
     const email = document.querySelector(".login input[placeholder='Email']").value;
     const password = document.querySelector(".login input[placeholder='Password']").value;
 
-    const response = await fetch("http://127.0.0.1:5000/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password })
-    });
+    if (!email || !password) {
+        alert("Please enter both email and password.");
+        return;
+    }
 
-    const result = await response.json();
-    alert(result.message || result.error);
+    try {
+        const response = await fetch("http://127.0.0.1:5000/login", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email, password })
+        });
 
-    if (response.status === 200) {
-        window.location.href = "{{ url_for('profile') }}";
+        const result = await response.json();
+        alert(result.message || result.error);
+
+        if (response.status === 200) {
+            window.location.href = "/profile"; // ✅ Correct redirection
+        }
+    } catch (error) {
+        console.error("Error:", error);
+        alert("An error occurred. Please try again.");
     }
 });
+
 const modal = document.getElementById("forgot-password-modal");
 const closeModal = document.querySelector(".close");
 // Show the forgot password modal when clicked
@@ -376,28 +387,35 @@ window.addEventListener("click", (e) => {
     }
 });
 // Handle password reset request
-document.getElementById("reset-btn").addEventListener("click", async () => {
-    const email = document.getElementById("reset-email").value;
-    const newPassword = document.getElementById("reset-password").value;
+document.addEventListener("DOMContentLoaded", function () {
+    document.getElementById("resetBtn").addEventListener("click", function () {
+        console.log("Reset button clicked!");
+        let email = document.getElementById("email").value;
 
-    if (!email || !newPassword) {
-        alert("Please fill in both fields.");
-        return;
-    }
+        if (!email) {
+            alert("Please enter your email.");
+            return;
+        }
 
-    const response = await fetch("http://127.0.0.1:5000/reset-password", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, new_password: newPassword })
+        fetch("http://127.0.0.1:5000/reset-password", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ email: email })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.message) {
+                alert(data.message); // Show success message
+            } else {
+                alert("Error: " + data.error);
+            }
+        })
+        .catch(error => console.error("Error:", error));
     });
-
-    const result = await response.json();
-    alert(result.message || result.error);
-
-    if (response.status === 200) {
-        document.getElementById("forgot-password-modal").style.display = "none";
-    }
 });
+
 
 
 

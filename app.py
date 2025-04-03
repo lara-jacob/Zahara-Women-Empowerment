@@ -6,6 +6,10 @@ import sqlite3
 import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
+import string
+import random
+
+
 
 # Email Configuration
 import smtplib
@@ -374,7 +378,8 @@ def reset_password():
     conn.commit()
 
     try:
-        sender_email = "varshapanicker5@gmail.com"  # Use your email  # Replace with your email
+        sender_email = "varshapanicker5@gmail.com"  # Use your email
+                                               # Replace with your email
         sender_password = "wost xbou lqeo mdwv"  # Use an app password, not your main password
         subject = "Password Reset Request"
 
@@ -389,7 +394,7 @@ def reset_password():
         A password reset was requested for your account.
         Your temporary password is: {temp_password}
 
-        
+        Please log in and change your password immediately.
 
         Regards,
         Your Team
@@ -402,7 +407,7 @@ def reset_password():
         server.sendmail(sender_email, email, msg.as_string())
         server.quit()
 
-        return jsonify({"message": "Temporary password has been sent to your email.Check spam folder"}), 200
+        return jsonify({"message": "Temporary password has been sent to your email"}), 200
 
     except Exception as e:
         return jsonify({"error": "Failed to send email", "details": str(e)}), 500
@@ -410,6 +415,7 @@ def reset_password():
     finally:
         cursor.close()
         conn.close()
+
 
 
 @app.route('/profile')
@@ -492,40 +498,6 @@ def add_user_scheme():
         return jsonify({'success': False, 'error': str(e)}), 500
 
 
-
-@app.route('/remove_user_scheme', methods=['POST'])
-def remove_user_scheme():
-    if 'user_id' not in session:
-        return jsonify({'success': False, 'error': 'User not logged in'}), 401
-
-    data = request.get_json()
-    scheme_id = data.get('scheme_id')
-    user_id = session['user_id']  # Get logged-in user ID
-
-    if not scheme_id:
-        return jsonify({'success': False, 'error': 'Invalid data'}), 400
-
-    try:
-        conn = get_db_connection()
-        cursor = conn.cursor(dictionary=True)
-
-        # Check if the scheme exists for the user
-        cursor.execute("SELECT * FROM UserScheme WHERE user_id = %s AND scheme_id = %s", (user_id, scheme_id))
-        existing_entry = cursor.fetchone()
-
-        if not existing_entry:
-            return jsonify({'success': False, 'message': 'Scheme not found'})
-
-        # Delete the scheme from UserScheme
-        cursor.execute("DELETE FROM UserScheme WHERE user_id = %s AND scheme_id = %s", (user_id, scheme_id))
-        conn.commit()
-
-        cursor.close()
-        conn.close()
-
-        return jsonify({'success': True})
-    except Exception as e:
-        return jsonify({'success': False, 'error': str(e)}), 500
 
 
 
