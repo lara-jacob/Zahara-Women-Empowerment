@@ -314,6 +314,22 @@ document.getElementById("sign-up-btn").addEventListener("click", async (e) => {
     const name = document.querySelector(".sign-up input[placeholder='Name']").value;
     const email = document.querySelector(".sign-up input[placeholder='Email']").value;
     const password = document.querySelector(".sign-up input[placeholder='Password']").value;
+     
+     if (!name || !email || !password) {
+        alert("All fields are required.");
+        return;
+    }
+    if (!email.includes("@") || !email.includes(".")) {
+        alert("Please enter a valid email address.");
+        return;
+    }
+    const nameRegex = /^[A-Za-z\s]+$/;
+    if (!nameRegex.test(name)) {
+        alert("Please enter a valid name.");
+        return;
+    }
+
+   
 
     const response = await fetch("http://127.0.0.1:5000/signup", {
         method: "POST",

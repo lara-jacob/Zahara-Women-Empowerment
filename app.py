@@ -275,7 +275,7 @@ def add_scheme():
     data = request.json
     
     # Check if all required keys exist in the request data
-    required_keys = ["name", "description", "age", "marital_status", "state", "residence", "category", "details"]
+    required_keys = ["name", "description", "age", "marital_status", "state", "residence", "category", "details","link"]
     for key in required_keys:
         if key not in data:
             return jsonify({"error": f"Missing field: {key}"}), 400
@@ -284,14 +284,13 @@ def add_scheme():
     cursor = conn.cursor()
 
     sql = """INSERT INTO schemes 
-            (name, description, age, marital_status, state, residence, category, details) 
-            VALUES (%s, %s, %s, %s, %s, %s, %s, %s)"""
+            (name, description, age, marital_status, state, residence, category, details,link) 
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s,%s)"""
 
     values = (
         data["name"], data["description"], data["age"], 
         data["marital_status"], data["state"], data["residence"], 
-        data["category"], data["details"]
-    )
+        data["category"], data["details"],data["link"]   )
 
     cursor.execute(sql, values)
     conn.commit()

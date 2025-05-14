@@ -70,6 +70,26 @@
             align-items: center;
             justify-content: center;
         }
+       @keyframes fadeIn {
+    from { opacity: 0; transform: scale(0.95); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+#addSchemeModal input {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 14px;
+}
+
+#addSchemeModal input:focus {
+    outline: none;
+    border-color: #007BFF;
+    box-shadow: 0 0 4px #007BFF55;
+    transition: border 0.2s ease-in-out;
+}
+
+
     </style>
 </head>
 <body>
@@ -99,6 +119,32 @@
             </tbody>
         </table>
     </div>
+    <!-- Modal for Adding Scheme -->
+<!-- Beautified and Centered Modal -->
+<div id="addSchemeModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background-color:rgba(0,0,0,0.5); z-index:1000; align-items:center; justify-content:center;">
+    <div style="background:white; padding:25px 30px; border-radius:15px; width:90%; max-width:450px; position:relative; box-shadow:0 8px 20px rgba(0,0,0,0.2); animation: fadeIn 0.3s ease;">
+        <span onclick="closeModal()" style="position:absolute; top:12px; right:18px; font-size:24px; font-weight:bold; cursor:pointer; color:#999;">&times;</span>
+        <h2 style="text-align:center; color:#333; margin-bottom:20px;"> Add New Scheme</h2>
+        <form id="schemeForm" style="display:flex; flex-direction:column; gap:12px;">
+            <input type="text" placeholder="Scheme Name" id="schemeName" required>
+            <input type="text" placeholder="Description" id="schemeDesc" required>
+            <input type="number" placeholder="Eligible Age (1–100)" id="schemeAge" min="1" max="100" required>
+            <input type="text" placeholder="Marital Status" id="schemeMarital" required>
+            <input type="text" placeholder="State" id="schemeState" required>
+            <input type="text" placeholder="Residence Type" id="schemeResidence" required>
+            <input type="text" placeholder="Category" id="schemeCategory" required>
+            <input type="text" placeholder="Details" id="schemeDetails" required>
+            <input type="url" placeholder="Link" id="schemeLink">
+
+            <div style="display:flex; justify-content:center; margin-top:10px;">
+                <button type="submit" style="background-color:#28a745; color:white; padding:10px 25px; border:none; border-radius:5px; cursor:pointer;">✅ Add</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+
 
     <script>
         document.addEventListener("DOMContentLoaded", fetchSchemes);
@@ -133,36 +179,54 @@
             `;
         }
 
-        function addScheme() {
-            const name = prompt("Enter Scheme Name:");
-            const description = prompt("Enter Scheme Description:");
-            const age = prompt("Enter Eligible Age:");
-            const marital_status = prompt("Enter Marital Status:");
-            const state = prompt("Enter State:");
-            const residence = prompt("Enter Residence Type:");
-            const category = prompt("Enter Category:");
-            const details = prompt("Enter Details:");
-            const link = prompt("Enter Link:");
+    function addScheme() {
+    document.getElementById("addSchemeModal").style.display = "flex";
+}
 
-            if (!name || !description || !category) {
-                return alert("Name, Description, and Category are required fields!");
-            }
+function closeModal() {
+    document.getElementById("addSchemeModal").style.display = "none";
+    document.getElementById("schemeForm").reset();
+}
 
-            fetch("/add_scheme", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ name, description, age, marital_status, state, residence, category, details,link })
-            })
-            .then(response => response.json())
-            .then(data => addRowToTable(data))
-            .catch(error => console.error("Error adding scheme:", error));
-        }
 
-        function deleteRow(id, button) {
-            fetch(`/delete_scheme/${id}`, { method: "DELETE" })
-                .then(() => button.parentElement.parentElement.remove())
-                .catch(error => console.error("Error deleting scheme:", error));
-        }
+   document.getElementById("schemeForm").addEventListener("submit", function (e) {
+    e.preventDefault();
+
+    const name = document.getElementById("schemeName").value.trim();
+    const description = document.getElementById("schemeDesc").value.trim();
+    const age = parseInt(document.getElementById("schemeAge").value);
+    const marital_status = document.getElementById("schemeMarital").value.trim();
+    const state = document.getElementById("schemeState").value.trim();
+    const residence = document.getElementById("schemeResidence").value.trim();
+    const category = document.getElementById("schemeCategory").value.trim();
+    const details = document.getElementById("schemeDetails").value.trim();
+    const link = document.getElementById("schemeLink").value.trim();
+
+    if (!name || !description || isNaN(age) || !category|| !link) {
+        alert("Please fill out all required fields correctly.");
+        return;
+    }
+
+    fetch("/add_scheme", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, description, age, marital_status, state, residence, category, details, link })
+    })
+        .then(response => response.json())
+        .then(data => {
+            addRowToTable(data);
+            closeModal();
+        })
+        .catch(error => console.error("Error adding scheme:", error));
+});
+
+ function deleteRow(id, button) {
+    fetch(`/delete_scheme/${id}`, { method: "DELETE" })
+        .then(() => button.parentElement.parentElement.remove())
+        .catch(error => console.error("Error deleting scheme:", error));
+}
+
+
     </script>
 </body>
 </html>
