@@ -8,6 +8,9 @@ from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 import string
 import random
+import mysql.connector
+import os
+
 
 
 
@@ -76,11 +79,13 @@ CORS(app)  # Allows frontend to communicate with backend
 
 # Database Configuration
 DB_CONFIG = {
-    "host": "localhost",
-    "user": "root",  # Change if needed
-    "password": "root123",  # Change this to your MySQL password
-    "database": "zaharaDB"
+    "host": "db4free.net",
+    "user": "zahara_user",
+    "password": "123456789",
+    "database": "zahara_db",
+    "port": 3306
 }
+
 
 # Function to get a fresh database connection
 def get_db_connection():
