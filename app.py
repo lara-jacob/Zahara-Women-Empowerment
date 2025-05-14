@@ -79,7 +79,7 @@ DB_CONFIG = {
     "host": "localhost",
     "user": "root",  # Change if needed
     "password": "root123",  # Change this to your MySQL password
-    "database": "zaharadb"
+    "database": "zaharaDB"
 }
 
 # Function to get a fresh database connection
